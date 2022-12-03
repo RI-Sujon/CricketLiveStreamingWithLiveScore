@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "704935872396",
+    "project_id": "cricproject-b1fb5",
+    "storage_bucket": "cricproject-b1fb5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:704935872396:android:b6fb4a7e0df48aa255b8a9",
+        "android_client_info": {
+          "package_name": "com.example.cric_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "704935872396-9c4jdr75hq031p174bdajgele7b5g7ge.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cric_flutter",
+            "certificate_hash": "1ca714898b9082ccef0f0e5b5e1589d46c25f963"
+          }
+        },
+        {
+          "client_id": "704935872396-l5nrusel95vmg07mrarod0mafrmgnpk0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmeWqgZju1mWZh2Am5rue4zxHgRFxsneU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "704935872396-l5nrusel95vmg07mrarod0mafrmgnpk0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
