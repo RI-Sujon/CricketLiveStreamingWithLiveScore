@@ -1,16 +1,21 @@
+import 'package:cric_flutter/LiveStreamC/pages/conmentrory.dart';
 import 'package:cric_flutter/LiveStreamC/pages/director_page.dart';
 import 'package:cric_flutter/LiveStreamC/pages/participant_page.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MyHomePage extends StatefulWidget {
+class LiveStreamHomePage extends StatefulWidget {
+  final String type;
+
+  const LiveStreamHomePage(this.type);
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _LiveStreamHomePageState createState() => _LiveStreamHomePageState();
 }
 
 //
-class _MyHomePageState extends State<MyHomePage> {
+class _LiveStreamHomePageState extends State<LiveStreamHomePage> {
   final _channelName = TextEditingController();
   final _userName = TextEditingController();
   String check = '';
@@ -41,7 +46,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: true,
-        body: Center(
+        body: SingleChildScrollView(
+            child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -49,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(
                 height: 5,
               ),
-              Text("Multi Streaming with Friends"),
+              Text(""),
               SizedBox(
                 height: 40,
               ),
@@ -95,25 +101,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
-              // TextButton(
-              //   style: TextButton.styleFrom(
-              //     primary: Colors.black,
-              //   ),
-              //   onPressed: () => joinDirector(),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     children: <Widget>[
-              //       Text(
-              //         'Director    ',
-              //         style: TextStyle(fontSize: 20),
-              //       ),
-              //       Icon(Icons.cut)
-              //     ],
-              //   ),
-              // )
             ],
           ),
-        ));
+        )));
   }
 
   Future<void> joinDirector() async {
@@ -132,14 +122,28 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> joinParticipant() async {
     await [Permission.camera, Permission.microphone].request();
 
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => ParticipantPage(
-          channelName: _channelName.text,
-          uid: uid,
-          userName: _userName.text,
+    if (widget.type == "video") {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => ParticipantPage(
+            channelName: _channelName.text,
+            uid: uid,
+            userName: _userName.text,
+            type: "video",
+          ),
         ),
-      ),
-    );
+      );
+    } else if (widget.type == "audio") {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => ParticipantPage2(
+            channelName: _channelName.text,
+            uid: uid,
+            userName: _userName.text,
+            type: "audio",
+          ),
+        ),
+      );
+    }
   }
 }

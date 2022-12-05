@@ -2067,10 +2067,25 @@ class _ScorePageState extends State<ScorePage> {
       match.team1Players = team1players;
     }
 
+    addOverTrackingOperation();
     updateFirestore();
     setState(() {
       isChangeBowlerScreenOpen = false;
     });
+  }
+
+  addOverTrackingOperation() {
+    OverTracking overTracking = OverTracking(
+        match.firstInnings.bowler,
+        match.firstInnings.overs,
+        match.firstInnings.totalRun,
+        match.firstInnings.wicket);
+
+    if (match.firstInnings.onBatting == match.team1Uid) {
+      match.firstInningsOverTracking.add(overTracking);
+    } else {
+      match.secondInningsOverTracking.add(overTracking);
+    }
   }
 
   Widget dropDownField(

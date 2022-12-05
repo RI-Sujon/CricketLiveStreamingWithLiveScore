@@ -102,9 +102,9 @@ const VideoCall = (props: {
 
   return (
     <div className="App">
-      {ready && tracks && (
-        <Controls tracks={tracks} setStart={setStart} setInCall={setInCall} />
-      )}
+      {/* {ready && tracks && (
+        // <Controls tracks={tracks} setStart={setStart} setInCall={setInCall} />
+      )} */}
       {start && tracks && <Videos users={users} tracks={tracks} />}
       {/* {start && tracks && <Videos users={users} />} */}
     </div>
@@ -121,25 +121,22 @@ const Videos = (props: {
   let flag = 1;
 
   return (
-    <div style={{backgroundColor: "#ffdd00"}}>
-      <div id="videos">
+    <div style={{backgroundColor: "#000000"}}>
+      <div id="videos" style={{ height: 570}}>
         {/* AgoraVideoPlayer component takes in the video track to render the stream,
             you can pass in other props that get passed to the rendered div */}
-        <AgoraVideoPlayer className='vid' videoTrack={tracks[1]} />
-        <Scorecard />
+        {/* <AgoraVideoPlayer className='vid' videoTrack={tracks[1]} /> */}
+        {/* <Scorecard /> */}
         
-        {/* {users.length > 0 &&
+        {users.length > 0 &&
           users.map((user) => {
-            console.log("===================>>>:" + user.uid + "+++++" + flag);
             if (user.videoTrack && user.uid===1308554743 && flag===1) {
-                console.log("===================<<<>>>:" + user.uid + "+++++" + flag);
                 flag = 0;
-                console.log("+++++" + flag);
               return (
-                <AgoraVideoPlayer style={{height: '95%', width: '95%'}} className='vid' videoTrack={user.videoTrack} key={user.uid} />
+                <AgoraVideoPlayer style={{height: '100%', width: '100%'}} className='vid' videoTrack={user.videoTrack} key={user.uid} />
               );
             } else return null;
-          })} */}
+          })}
       </div>
     </div>
   );

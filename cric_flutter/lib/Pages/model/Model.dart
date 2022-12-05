@@ -12,6 +12,8 @@ class Match {
   Innings secondInnings = Innings("", 0, 0, 0, 0, "", "", "", 0, 0);
   List<dynamic> team1Players = [];
   List<dynamic> team2Players = [];
+  List<dynamic> firstInningsOverTracking = [];
+  List<dynamic> secondInningsOverTracking = [];
 
   Match(
       this.matchName,
@@ -26,7 +28,9 @@ class Match {
       this.firstInnings,
       this.secondInnings,
       this.team1Players,
-      this.team2Players);
+      this.team2Players,
+      this.firstInningsOverTracking,
+      this.secondInningsOverTracking);
 
   Match.fromJson(Map<String, dynamic> json) {
     matchName = json['matchName'];
@@ -42,6 +46,8 @@ class Match {
     secondInnings = Innings.fromJson(json['secondInnings']);
     team1Players = json['team1Players'];
     team2Players = json['team2Players'];
+    firstInningsOverTracking = json['firstInningsOverTracking'];
+    secondInningsOverTracking = json['secondInningsOverTracking'];
   }
 
   Map<String, dynamic> toJson() {
@@ -59,6 +65,8 @@ class Match {
     data['secondInnings'] = this.secondInnings.toJson();
     data['team1Players'] = this.team1Players;
     data['team2Players'] = this.team2Players;
+    data['firstInningsOverTracking'] = this.firstInningsOverTracking;
+    data['secondInningsOverTracking'] = this.secondInningsOverTracking;
 
     return data;
   }
@@ -274,6 +282,32 @@ class Player {
     data['battingStyle'] = this.battingStyle;
     data['bowlingStyle'] = this.bowlingStyle;
     data['category'] = this.category;
+
+    return data;
+  }
+}
+
+class OverTracking {
+  String bowlerName = "";
+  int overNo = 0;
+  int totalRun = 0;
+  int wicket = 0;
+
+  OverTracking(this.bowlerName, this.overNo, this.totalRun, this.wicket);
+
+  OverTracking.fromJson(Map<String, dynamic> json) {
+    bowlerName = json['bowlerName'];
+    overNo = json['overNo'];
+    totalRun = json['totalRun'];
+    wicket = json['wicket'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['bowlerName'] = this.bowlerName;
+    data['overNo'] = this.overNo;
+    data['totalRun'] = this.totalRun;
+    data['wicket'] = this.wicket;
 
     return data;
   }

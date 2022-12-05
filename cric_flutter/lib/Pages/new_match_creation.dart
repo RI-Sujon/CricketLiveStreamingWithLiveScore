@@ -290,7 +290,7 @@ class _NewMatchCreationState extends State<NewMatchCreation> {
         _oversController.text,
         firebaseUser.uid,
         Innings(onBatting1, 0, 0, 0, 0, "", "", "", 0, 0),
-        Innings(onBatting2, 0, 0, 0, 0, "", "", "", 0, 0), [], []);
+        Innings(onBatting2, 0, 0, 0, 0, "", "", "", 0, 0), [], [], [], []);
 
     var docId = DateTime.now().millisecondsSinceEpoch.toString();
     await FirebaseFirestore.instance

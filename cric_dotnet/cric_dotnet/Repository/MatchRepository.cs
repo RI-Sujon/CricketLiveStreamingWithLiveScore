@@ -17,26 +17,32 @@ namespace cric_dotnet.Repository
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", path);
 
             FirestoreDb database = FirestoreDb.Create("cricproject-b1fb5");
-            Dictionary<string, dynamic> map = new Dictionary<string, object>();
+            Dictionary<string, dynamic> mainMap = new Dictionary<string, dynamic>();
+            List<dynamic> list = new List<object>();
             Query query = database.Collection("Match");
             QuerySnapshot snapshots = await query.GetSnapshotAsync();
             foreach (DocumentSnapshot documentSnapshot in snapshots.Documents)
             {
                 Console.WriteLine("Document data for {0} document:", documentSnapshot.Id);
                 Dictionary<string, object> pairs = documentSnapshot.ToDictionary();
+                Dictionary<string, string> map = new Dictionary<string, string>();
                 foreach (KeyValuePair<string, dynamic> pair in pairs)
                 {
                     Console.WriteLine("{0}: {1}", pair.Key, pair.Value);
                     if (pair.Key == "matchName") 
                     {
-                        map.Add(documentSnapshot.Id, pair.Value);
+                        map.Add("matchId", documentSnapshot.Id);
+                        map.Add("matchName", pair.Value);
                     }
                        
                 }
                 Console.WriteLine("");
+                list.Add(map);
             }
 
-            return map;
+            mainMap.Add("matchList", list);
+
+            return mainMap;
         }
 
         async public Task<Match> GetMatch(string matchId)

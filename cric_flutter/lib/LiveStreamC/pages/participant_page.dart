@@ -7,18 +7,21 @@ import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'package:flutter/services.dart';
 
 class ParticipantPage extends StatefulWidget {
   final String channelName;
   final int uid;
   final String userName;
+  final String type;
 
-  const ParticipantPage({
-    Key? key,
-    required this.channelName,
-    required this.uid,
-    required this.userName,
-  }) : super(key: key);
+  const ParticipantPage(
+      {Key? key,
+      required this.channelName,
+      required this.uid,
+      required this.userName,
+      required this.type})
+      : super(key: key);
 
   @override
   _BroadcastPageState createState() => _BroadcastPageState();
@@ -29,7 +32,7 @@ class _BroadcastPageState extends State<ParticipantPage> {
   late RtcEngine _engine;
   AgoraRtmClient? _client;
   AgoraRtmChannel? _channel;
-  bool muted = false;
+  bool muted = true;
   bool videoDisabled = false;
 
   @override
@@ -55,9 +58,18 @@ class _BroadcastPageState extends State<ParticipantPage> {
     _engine = await RtcEngine.createWithContext(RtcEngineContext(appId));
     _client = await AgoraRtmClient.createInstance(appId);
 
+    // VideoEncoderConfiguration videoEncoderConfiguration =
+    //     new VideoEncoderConfiguration();
+    // videoEncoderConfiguration.orientationMode =
+    //     VideoOutputOrientationMode.FixedLandscape;
+    // _engine.setVideoEncoderConfiguration(videoEncoderConfiguration);
+
     await _engine.enableVideo();
     await _engine.setChannelProfile(ChannelProfile.LiveBroadcasting);
     await _engine.setClientRole(ClientRole.Broadcaster);
+    await _engine.disableAudio();
+    await _engine.switchCamera();
+    // await _engine.
 
     _engine.setEventHandler(RtcEngineEventHandler(
       joinChannelSuccess: (channel, uid, elapsed) {
@@ -105,6 +117,8 @@ class _BroadcastPageState extends State<ParticipantPage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     return Scaffold(
       body: Center(
         child: Stack(
@@ -139,14 +153,14 @@ class _BroadcastPageState extends State<ParticipantPage> {
           RawMaterialButton(
             onPressed: () => _onCallEnd(context),
             child: Icon(
-              Icons.call_end,
-              color: Colors.white,
-              size: 35.0,
+              Icons.stop_circle_rounded,
+              color: Colors.red,
+              size: 55.0,
             ),
             shape: CircleBorder(),
             elevation: 2.0,
-            fillColor: Colors.redAccent,
-            padding: const EdgeInsets.all(15.0),
+            fillColor: Colors.white,
+            padding: const EdgeInsets.all(4.0),
           ),
           // RawMaterialButton(
           //   onPressed: _onToggleVideoDisabled,
@@ -160,18 +174,18 @@ class _BroadcastPageState extends State<ParticipantPage> {
           //   fillColor: videoDisabled ? Colors.blueAccent : Colors.white,
           //   padding: const EdgeInsets.all(12.0),
           // ),
-          RawMaterialButton(
-            onPressed: _onSwitchCamera,
-            child: Icon(
-              Icons.switch_camera,
-              color: Colors.blueAccent,
-              size: 20.0,
-            ),
-            shape: CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: const EdgeInsets.all(12.0),
-          )
+          // RawMaterialButton(
+          //   onPressed: _onSwitchCamera,
+          //   child: Icon(
+          //     Icons.switch_camera,
+          //     color: Colors.blueAccent,
+          //     size: 20.0,
+          //   ),
+          //   shape: CircleBorder(),
+          //   elevation: 2.0,
+          //   fillColor: Colors.white,
+          //   padding: const EdgeInsets.all(12.0),
+          // )
         ],
       ),
     );

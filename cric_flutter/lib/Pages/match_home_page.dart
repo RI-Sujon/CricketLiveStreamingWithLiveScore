@@ -85,8 +85,9 @@ class _MatchHomePageState extends State<MatchHomePage> {
               CustomOptionButton(
                 innerText: "Video Recording",
                 onPressed: () {
-                  Route route = MaterialPageRoute(builder: (_) => MyHomePage());
-                  Navigator.pushReplacement(context, route);
+                  Route route = MaterialPageRoute(
+                      builder: (_) => LiveStreamHomePage("video"));
+                  Navigator.push(context, route);
                 },
               ),
               SizedBox(
@@ -95,8 +96,9 @@ class _MatchHomePageState extends State<MatchHomePage> {
               CustomOptionButton(
                 innerText: "Audio Commentry",
                 onPressed: () {
-                  Route route = MaterialPageRoute(builder: (_) => MyHomePage());
-                  Navigator.pushReplacement(context, route);
+                  Route route = MaterialPageRoute(
+                      builder: (_) => LiveStreamHomePage("audio"));
+                  Navigator.push(context, route);
                 },
               ),
             ],
