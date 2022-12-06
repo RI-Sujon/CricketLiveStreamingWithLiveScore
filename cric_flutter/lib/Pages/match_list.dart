@@ -33,7 +33,7 @@ class _MatchListState extends State<MatchList> {
         stream: FirebaseFirestore.instance.collection("Match").snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Text("No Data");
+            return Text("Loading");
           } else {
             return ListView.builder(
               itemCount: snapshot.data!.docs.length,

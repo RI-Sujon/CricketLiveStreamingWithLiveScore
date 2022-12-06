@@ -33,6 +33,9 @@ namespace cric_dotnet.Models
        
         public List<PlayerInnings> team1Players { get; set; }
         public List<PlayerInnings> team2Players { get; set; }
+
+        public List<OverTracking> firstInningsOverTracking { get; set; }
+        public List<OverTracking> secondInningsOverTracking { get; set; }
     }
 
     public class Innings 
@@ -106,5 +109,17 @@ namespace cric_dotnet.Models
         public string bowlerName { get; set; }
         [FirestoreProperty]
         public string supportBy { get; set; }
+    }
+
+    public class OverTracking 
+    {
+        [FirestoreProperty]
+        public string bowlerName { get; set; }
+        [FirestoreProperty]
+        public int overNo { get; set; }
+        [FirestoreProperty]
+        public int totalRun { get; set; }
+        [FirestoreProperty]
+        public int wicket { get; set; }
     }
 }

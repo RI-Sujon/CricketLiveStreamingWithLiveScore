@@ -1,3 +1,4 @@
+import 'package:cric_flutter/Authentication/common/custom_form_button.dart';
 import 'package:cric_flutter/LiveStreamC/pages/conmentrory.dart';
 import 'package:cric_flutter/LiveStreamC/pages/director_page.dart';
 import 'package:cric_flutter/LiveStreamC/pages/participant_page.dart';
@@ -45,33 +46,25 @@ class _LiveStreamHomePageState extends State<LiveStreamHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: true,
-        body: SingleChildScrollView(
-            child: Center(
+        appBar: AppBar(
+          title: Text("Connect With A Match"),
+          backgroundColor: Color(0xff233743),
+        ),
+        body: Center(
+            child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               // Image.asset("images/streamer.png"),
               SizedBox(
                 height: 5,
               ),
-              Text(""),
-              SizedBox(
-                height: 40,
+              Text(
+                "Enter Match ID",
+                style: TextStyle(fontSize: 20),
               ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.85,
-                child: TextFormField(
-                  controller: _userName,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(color: Colors.grey),
-                    ),
-                    hintText: 'User Name',
-                  ),
-                ),
-              ),
+
               SizedBox(height: 8),
               Container(
                 width: MediaQuery.of(context).size.width * 0.85,
@@ -82,25 +75,16 @@ class _LiveStreamHomePageState extends State<LiveStreamHomePage> {
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide(color: Colors.grey),
                     ),
-                    hintText: 'Channel Name',
+                    hintText: 'Match ID',
                   ),
                 ),
               ),
-              TextButton(
-                onPressed: () => joinParticipant(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      'Participant  ',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    Icon(
-                      Icons.live_tv,
-                    )
-                  ],
-                ),
+              SizedBox(height: 30),
+              CustomFormButton(
+                innerText: 'Connect',
+                onPressed: joinParticipant,
               ),
+              SizedBox(height: 30),
             ],
           ),
         )));

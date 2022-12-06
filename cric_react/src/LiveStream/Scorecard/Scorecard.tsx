@@ -10,7 +10,7 @@ export default function Scorecard(props: any) {
 
     const removeSerialNumber = (name: any) => {
         if(name.length > 0){
-            if(name[1]=='.'){
+            if(name[1]==='.'){
                 name = name.substring(3, name.length);
             }
             else{

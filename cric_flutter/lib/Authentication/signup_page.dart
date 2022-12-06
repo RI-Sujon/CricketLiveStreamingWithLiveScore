@@ -49,60 +49,59 @@ class _SignupPageState extends State<SignupPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xffEEF1F3),
-        body: SingleChildScrollView(
-          child: Form(
-            key: _signupFormKey,
-            child: Column(
-              children: [
-                const PageHeader(),
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20),
-                    ),
-                  ),
+        body: Column(children: [
+          const PageHeader(),
+          Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
+              ),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _signupFormKey,
                   child: Column(
                     children: [
                       const PageHeading(
                         title: 'Sign-up',
                       ),
-                      SizedBox(
-                        width: 130,
-                        height: 130,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.grey.shade200,
-                          backgroundImage: _profileImage != null
-                              ? FileImage(_profileImage!)
-                              : null,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                bottom: 5,
-                                right: 5,
-                                child: GestureDetector(
-                                  onTap: _pickProfileImage,
-                                  child: Container(
-                                    height: 50,
-                                    width: 50,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue.shade400,
-                                      border: Border.all(
-                                          color: Colors.white, width: 3),
-                                      borderRadius: BorderRadius.circular(25),
-                                    ),
-                                    child: const Icon(
-                                      Icons.camera_alt_sharp,
-                                      color: Colors.white,
-                                      size: 25,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      // SizedBox(
+                      //   width: 130,
+                      //   height: 130,
+                      //   child: CircleAvatar(
+                      //     backgroundColor: Colors.grey.shade200,
+                      //     backgroundImage: _profileImage != null
+                      //         ? FileImage(_profileImage!)
+                      //         : null,
+                      //     child: Stack(
+                      //       children: [
+                      //         Positioned(
+                      //           bottom: 5,
+                      //           right: 5,
+                      //           child: GestureDetector(
+                      //             onTap: _pickProfileImage,
+                      //             child: Container(
+                      //               height: 50,
+                      //               width: 50,
+                      //               decoration: BoxDecoration(
+                      //                 color: Colors.blue.shade400,
+                      //                 border: Border.all(
+                      //                     color: Colors.white, width: 3),
+                      //                 borderRadius: BorderRadius.circular(25),
+                      //               ),
+                      //               child: const Icon(
+                      //                 Icons.camera_alt_sharp,
+                      //                 color: Colors.white,
+                      //                 size: 25,
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ),
+                      // ),
                       const SizedBox(
                         height: 16,
                       ),
@@ -206,15 +205,13 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                       ),
                       const SizedBox(
-                        height: 30,
+                        height: 60,
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              )),
+        ]),
       ),
     );
   }

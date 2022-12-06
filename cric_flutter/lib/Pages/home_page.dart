@@ -71,14 +71,9 @@ class _HomePageState extends State<HomePage> {
                                               shape: BoxShape.circle,
                                             ),
                                             child: ClipOval(
-                                              child: FadeInImage.assetNetwork(
-                                                placeholder:
-                                                    "assets/images/friendship.png",
-                                                // image: userBasicInfo.profileUri,
-                                                image:
-                                                    "assets/images/friendship.png",
-                                                fit: BoxFit.cover,
-                                              ),
+                                              child: Image.asset(
+                                                  'assets/images/friendship.png',
+                                                  fit: BoxFit.cover),
                                             ),
                                           ),
                                         ),
@@ -97,9 +92,9 @@ class _HomePageState extends State<HomePage> {
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             left: 5.0, bottom: 5.0),
-                                        child: Text(
-                                          "Welcome,",
-                                        ),
+                                        child: Text("Welcome,",
+                                            style:
+                                                TextStyle(color: Colors.white)),
                                       ),
                                       Padding(
                                           padding:
@@ -107,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                                           child: creator != null
                                               ? Text("${creator.name}",
                                                   style: TextStyle(
-                                                      fontSize: 20,
+                                                      fontSize: 25,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       color: Colors.white))
@@ -122,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                           Text(
                             creator != null ? "${creator.email}" : "",
                             style: TextStyle(
-                                fontSize: 17,
+                                fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
@@ -132,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.deepOrange,
+                        color: Color(0xff233743),
                       ),
                     ),
                     ...getAllDrawerItems(),
@@ -144,39 +139,58 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CustomOptionButton(
-              innerText: 'Create a New Match',
-              onPressed: () {
-                Route route =
-                    MaterialPageRoute(builder: (_) => NewMatchCreation());
-                Navigator.push(context, route);
-              },
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            CustomOptionButton(
-              innerText: 'Existing Matches',
-              onPressed: () {
-                Route route = MaterialPageRoute(builder: (_) => MatchList());
-                Navigator.push(context, route);
-              },
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            CustomOptionButton(
-              innerText: 'Teams',
-              onPressed: () {
-                Route route = MaterialPageRoute(builder: (_) => TeamList());
-                Navigator.push(context, route);
-              },
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 30,
+              ),
+              CustomOptionButton(
+                innerText: 'Create A New Match',
+                onPressed: () {
+                  Route route =
+                      MaterialPageRoute(builder: (_) => NewMatchCreation());
+                  Navigator.push(context, route);
+                },
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              CustomOptionButton(
+                innerText: 'Existing Matches',
+                onPressed: () {
+                  Route route = MaterialPageRoute(builder: (_) => MatchList());
+                  Navigator.push(context, route);
+                },
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              CustomOptionButton(
+                innerText: 'My Teams',
+                onPressed: () {
+                  Route route = MaterialPageRoute(builder: (_) => TeamList());
+                  Navigator.push(context, route);
+                },
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              CustomOptionButton(
+                innerText: 'Connect With A Match',
+                onPressed: () {
+                  Route route =
+                      MaterialPageRoute(builder: (_) => ConnectWithMatch());
+                  Navigator.push(context, route);
+                },
+              ),
+              SizedBox(
+                height: 30,
+              ),
+            ],
+          ),
         ),
       ),
     ));

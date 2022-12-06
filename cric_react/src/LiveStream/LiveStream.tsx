@@ -48,6 +48,11 @@ export default function LiveStream() {
         }
     });
 
+    React.useEffect(() => {
+        console.log("+-+-+-+222+-+-+:" + matchData.matchName);
+        console.log("+-+-+-+333+-+-+:" + matchData.firstInningsOverTracking);
+    }, [matchData]);
+
     const httpHandling = () => {
         console.log("Kocchuu");
         axios.get('http://localhost:5001/match/getMatchByMatchId?matchId='+matchId)
@@ -78,7 +83,7 @@ export default function LiveStream() {
                             <div>
                                 <Scorecard matchData={matchData}/>
                             </div>
-                            <Graph/>
+                            <Graph matchData={matchData}/>
                         </Stack>
                     </Grid>
                     <Grid item xs={2}>

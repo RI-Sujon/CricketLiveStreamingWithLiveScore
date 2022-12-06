@@ -1004,389 +1004,469 @@ class _ScorePageState extends State<ScorePage> {
   }
 
   Widget writeScore(BuildContext context) {
+    Color scoreBackgroundColor = Color.fromARGB(255, 22, 40, 52);
+    Color scoreTextColor = Colors.white;
+    Color totalRunByWicketBgColor = Color.fromARGB(255, 43, 77, 98);
+    Color totalRunByWicketTextColor = Colors.white;
+
     return Scaffold(
         body: Container(
       color: Colors.black,
-      margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+      // margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
       child: Column(children: <Widget>[
         Flexible(
-          child: Row(
-            children: <Widget>[
-              Flexible(
-                child: Column(
-                  children: <Widget>[
-                    Flexible(
-                      child: Container(
-                        margin: EdgeInsets.all(1),
-                        height: double.infinity,
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        color: Colors.green,
-                        child: Text(battingTeamName),
-                      ),
-                      flex: 2,
-                    ),
-                    Flexible(
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: Container(
-                              margin: EdgeInsets.fromLTRB(1, 1, 0, 1),
-                              height: double.infinity,
-                              width: double.infinity,
-                              alignment: Alignment.centerLeft,
-                              color: Colors.green,
-                              child: Text(batsmanOneName[1] == '.'
-                                  ? batsmanOneName.substring(
-                                      2, batsmanOneName.length)
-                                  : batsmanOneName.substring(
-                                      3, batsmanOneName.length)),
-                            ),
-                            flex: 5,
-                          ),
-                          Flexible(
-                            child: Container(
-                                margin: EdgeInsets.fromLTRB(0, 1, 0.5, 1),
-                                height: double.infinity,
-                                width: double.infinity,
-                                alignment: Alignment.center,
-                                color: Colors.green,
-                                child: Text(isOnStrikeBatsmanOne)),
-                            flex: 2,
-                          ),
-                          Flexible(
-                            child: Container(
-                                margin: EdgeInsets.fromLTRB(0, 1, 0.5, 1),
-                                height: double.infinity,
-                                width: double.infinity,
-                                alignment: Alignment.center,
-                                color: Colors.green,
-                                child: Text(batsmanOneRun.toString())),
-                            flex: 2,
-                          ),
-                          Flexible(
-                            child: Container(
-                                margin: EdgeInsets.fromLTRB(0, 1, 1, 1),
-                                height: double.infinity,
-                                width: double.infinity,
-                                alignment: Alignment.center,
-                                color: Colors.green,
-                                child: Text(batsmanOneBallConceded.toString())),
-                            flex: 2,
-                          ),
-                        ],
-                      ),
-                      flex: 4,
-                    ),
-                    Flexible(
-                      child: Row(
-                        children: <Widget>[
-                          Flexible(
-                            child: Container(
-                              margin: EdgeInsets.fromLTRB(1, 1, 0, 1),
-                              height: double.infinity,
-                              width: double.infinity,
-                              alignment: Alignment.centerLeft,
-                              color: Colors.green,
-                              child: Text(batsmanTwoName[1] == "."
-                                  ? batsmanTwoName.substring(
-                                      2, batsmanTwoName.length)
-                                  : batsmanTwoName.substring(
-                                      3, batsmanTwoName.length)),
-                            ),
-                            flex: 5,
-                          ),
-                          Flexible(
-                            child: Container(
-                                margin: EdgeInsets.fromLTRB(0, 1, 0.5, 1),
-                                height: double.infinity,
-                                width: double.infinity,
-                                alignment: Alignment.center,
-                                color: Colors.green,
-                                child: Text(isOnStrikeBatsmanTwo)),
-                            flex: 2,
-                          ),
-                          Flexible(
-                            child: Container(
-                                margin: EdgeInsets.fromLTRB(0, 1, 0.5, 1),
-                                height: double.infinity,
-                                width: double.infinity,
-                                alignment: Alignment.center,
-                                color: Colors.green,
-                                child: Text(batsmanTwoRun.toString())),
-                            flex: 2,
-                          ),
-                          Flexible(
-                            child: Container(
-                                margin: EdgeInsets.fromLTRB(0, 1, 1, 1),
-                                height: double.infinity,
-                                width: double.infinity,
-                                alignment: Alignment.center,
-                                color: Colors.green,
-                                child: Text(batsmanTwoBallConceded.toString())),
-                            flex: 2,
-                          ),
-                        ],
-                      ),
-                      flex: 4,
-                    ),
-                    Flexible(
-                      child: Container(
-                        margin: EdgeInsets.all(1),
-                        height: double.infinity,
-                        width: double.infinity,
-                        alignment: Alignment.centerLeft,
-                        color: Colors.green,
-                        child: Text(" Extra Info"),
-                      ),
-                      flex: 3,
-                    ),
-                  ],
-                ),
-                flex: 4,
-              ),
-              Flexible(
-                child: Column(
-                  children: <Widget>[
-                    Flexible(
-                      child: Container(
+          child: Padding(
+            padding: EdgeInsets.all(5),
+            child: Row(
+              children: <Widget>[
+                Flexible(
+                  child: Column(
+                    children: <Widget>[
+                      Flexible(
+                        child: Container(
                           margin: EdgeInsets.all(1),
                           height: double.infinity,
                           width: double.infinity,
                           alignment: Alignment.center,
-                          color: Colors.green,
-                          child: Text(innings)),
-                      flex: 2,
-                    ),
-                    Flexible(
-                      child: Container(
-                        margin: EdgeInsets.all(1),
-                        height: double.infinity,
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        color: Colors.orange,
-                        child: Text(
-                            totalRun.toString() + " - " + wicket.toString()),
+                          color: scoreBackgroundColor,
+                          padding: EdgeInsets.all(0),
+                          child: Text(
+                              style: TextStyle(
+                                  color: scoreTextColor, fontSize: 11),
+                              battingTeamName),
+                        ),
+                        flex: 2,
                       ),
-                      flex: 5,
-                    ),
-                    Flexible(
-                      child: Container(
-                        margin: EdgeInsets.all(1),
-                        height: double.infinity,
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        color: Colors.green,
-                        child: Text("OVERS: " +
-                            overs.toString() +
-                            "." +
-                            ballInAOver.toString()),
+                      Flexible(
+                        child: Row(
+                          children: <Widget>[
+                            Flexible(
+                              child: Container(
+                                margin: EdgeInsets.fromLTRB(1, 1, 0, 1),
+                                height: double.infinity,
+                                width: double.infinity,
+                                alignment: Alignment.centerLeft,
+                                color: scoreBackgroundColor,
+                                child: Text(
+                                    style: TextStyle(color: scoreTextColor),
+                                    batsmanOneName[1] == '.'
+                                        ? batsmanOneName.substring(
+                                            2, batsmanOneName.length)
+                                        : batsmanOneName.substring(
+                                            3, batsmanOneName.length)),
+                              ),
+                              flex: 5,
+                            ),
+                            Flexible(
+                              child: Container(
+                                  margin: EdgeInsets.fromLTRB(0, 1, 0.5, 1),
+                                  height: double.infinity,
+                                  width: double.infinity,
+                                  alignment: Alignment.center,
+                                  color: scoreBackgroundColor,
+                                  child: Text(
+                                      style: TextStyle(color: scoreTextColor),
+                                      isOnStrikeBatsmanOne)),
+                              flex: 2,
+                            ),
+                            Flexible(
+                              child: Container(
+                                  margin: EdgeInsets.fromLTRB(0, 1, 0.5, 1),
+                                  height: double.infinity,
+                                  width: double.infinity,
+                                  alignment: Alignment.center,
+                                  color: scoreBackgroundColor,
+                                  child: Text(
+                                      style: TextStyle(color: scoreTextColor),
+                                      batsmanOneRun.toString())),
+                              flex: 2,
+                            ),
+                            Flexible(
+                              child: Container(
+                                  margin: EdgeInsets.fromLTRB(0, 1, 1, 1),
+                                  height: double.infinity,
+                                  width: double.infinity,
+                                  alignment: Alignment.center,
+                                  color: scoreBackgroundColor,
+                                  child: Text(
+                                      style: TextStyle(color: scoreTextColor),
+                                      batsmanOneBallConceded.toString())),
+                              flex: 2,
+                            ),
+                          ],
+                        ),
+                        flex: 4,
                       ),
-                      flex: 2,
-                    ),
-                    Flexible(
-                      child: Container(
+                      Flexible(
+                        child: Row(
+                          children: <Widget>[
+                            Flexible(
+                              child: Container(
+                                margin: EdgeInsets.fromLTRB(1, 1, 0, 1),
+                                height: double.infinity,
+                                width: double.infinity,
+                                alignment: Alignment.centerLeft,
+                                color: scoreBackgroundColor,
+                                child: Text(
+                                    style: TextStyle(color: scoreTextColor),
+                                    batsmanTwoName[1] == "."
+                                        ? batsmanTwoName.substring(
+                                            2, batsmanTwoName.length)
+                                        : batsmanTwoName.substring(
+                                            3, batsmanTwoName.length)),
+                              ),
+                              flex: 5,
+                            ),
+                            Flexible(
+                              child: Container(
+                                  margin: EdgeInsets.fromLTRB(0, 1, 0.5, 1),
+                                  height: double.infinity,
+                                  width: double.infinity,
+                                  alignment: Alignment.center,
+                                  color: scoreBackgroundColor,
+                                  child: Text(
+                                      style: TextStyle(color: scoreTextColor),
+                                      isOnStrikeBatsmanTwo)),
+                              flex: 2,
+                            ),
+                            Flexible(
+                              child: Container(
+                                  margin: EdgeInsets.fromLTRB(0, 1, 0.5, 1),
+                                  height: double.infinity,
+                                  width: double.infinity,
+                                  alignment: Alignment.center,
+                                  color: scoreBackgroundColor,
+                                  child: Text(
+                                      style: TextStyle(color: scoreTextColor),
+                                      batsmanTwoRun.toString())),
+                              flex: 2,
+                            ),
+                            Flexible(
+                              child: Container(
+                                  margin: EdgeInsets.fromLTRB(0, 1, 1, 1),
+                                  height: double.infinity,
+                                  width: double.infinity,
+                                  alignment: Alignment.center,
+                                  color: scoreBackgroundColor,
+                                  child: Text(
+                                      style: TextStyle(color: scoreTextColor),
+                                      batsmanTwoBallConceded.toString())),
+                              flex: 2,
+                            ),
+                          ],
+                        ),
+                        flex: 4,
+                      ),
+                      Flexible(
+                        child: Container(
+                          margin: EdgeInsets.all(1),
+                          height: double.infinity,
+                          width: double.infinity,
+                          alignment: Alignment.centerLeft,
+                          color: scoreBackgroundColor,
+                          child: Text(
+                              style: TextStyle(
+                                  color: scoreTextColor, fontSize: 13),
+                              " Extra Info"),
+                        ),
+                        flex: 3,
+                      ),
+                    ],
+                  ),
+                  flex: 4,
+                ),
+                Flexible(
+                  child: Column(
+                    children: <Widget>[
+                      Flexible(
+                        child: Container(
+                            margin: EdgeInsets.all(1),
+                            height: double.infinity,
+                            width: double.infinity,
+                            alignment: Alignment.center,
+                            color: scoreBackgroundColor,
+                            child: Text(
+                                style: TextStyle(
+                                    color: scoreTextColor, fontSize: 12),
+                                innings)),
+                        flex: 2,
+                      ),
+                      Flexible(
+                        child: Container(
                           margin: EdgeInsets.all(1),
                           height: double.infinity,
                           width: double.infinity,
                           alignment: Alignment.center,
-                          color: Colors.green,
-                          child: Text("EXTRA:" + extraRun.toString())),
-                      flex: 3,
-                    ),
-                  ],
-                ),
-                flex: 3,
-              ),
-              Flexible(
-                child: Column(
-                  children: <Widget>[
-                    Flexible(
-                      child: Container(
-                        margin: EdgeInsets.all(1),
-                        height: double.infinity,
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        color: Colors.green,
-                        child: Text(bowlingTeamName),
+                          color: totalRunByWicketBgColor,
+                          child: Text(
+                              style: TextStyle(
+                                  color: totalRunByWicketTextColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                              totalRun.toString() + " - " + wicket.toString()),
+                        ),
+                        flex: 6,
                       ),
-                      flex: 2,
-                    ),
-                    Flexible(
-                      child: Row(
-                        children: <Widget>[
+                      Flexible(
+                        child: Container(
+                          margin: EdgeInsets.all(1),
+                          height: double.infinity,
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          color: scoreBackgroundColor,
+                          child: Text(
+                              style: TextStyle(
+                                  color: scoreTextColor, fontSize: 12),
+                              "OVERS: " +
+                                  overs.toString() +
+                                  "." +
+                                  ballInAOver.toString()),
+                        ),
+                        flex: 3,
+                      ),
+                      Flexible(
+                        child: Container(
+                            margin: EdgeInsets.all(1),
+                            height: double.infinity,
+                            width: double.infinity,
+                            alignment: Alignment.center,
+                            color: scoreBackgroundColor,
+                            child: Text(
+                                style: TextStyle(
+                                    color: scoreTextColor, fontSize: 13),
+                                "EXTRA:" + extraRun.toString())),
+                        flex: 3,
+                      ),
+                    ],
+                  ),
+                  flex: 3,
+                ),
+                Flexible(
+                  child: Column(
+                    children: <Widget>[
+                      Flexible(
+                        child: Container(
+                          margin: EdgeInsets.all(1),
+                          height: double.infinity,
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          color: scoreBackgroundColor,
+                          child: Text(
+                              style: TextStyle(
+                                  color: scoreTextColor, fontSize: 11),
+                              bowlingTeamName),
+                        ),
+                        flex: 2,
+                      ),
+                      Flexible(
+                        child: Row(
+                          children: <Widget>[
+                            Flexible(
+                              child: Container(
+                                margin: EdgeInsets.fromLTRB(1, 1, 0, 1),
+                                height: double.infinity,
+                                width: double.infinity,
+                                alignment: Alignment.centerLeft,
+                                color: scoreBackgroundColor,
+                                child: Text(
+                                    style: TextStyle(color: scoreTextColor),
+                                    bowlerName[1] == "."
+                                        ? bowlerName.substring(
+                                            2, bowlerName.length)
+                                        : bowlerName.substring(
+                                            3, bowlerName.length)),
+                              ),
+                              flex: 5,
+                            ),
+                            Flexible(
+                              child: Container(
+                                  margin: EdgeInsets.fromLTRB(0, 1, 0.5, 1),
+                                  height: double.infinity,
+                                  width: double.infinity,
+                                  alignment: Alignment.center,
+                                  color: scoreBackgroundColor,
+                                  child: Text(
+                                      style: TextStyle(color: scoreTextColor),
+                                      bowlerWicket.toString() +
+                                          "-" +
+                                          bowlerRunConceded.toString())),
+                              flex: 2,
+                            ),
+                            Flexible(
+                              child: Container(
+                                  margin: EdgeInsets.fromLTRB(0, 1, 1, 1),
+                                  height: double.infinity,
+                                  width: double.infinity,
+                                  alignment: Alignment.center,
+                                  color: scoreBackgroundColor,
+                                  child: Text(
+                                      style: TextStyle(color: scoreTextColor),
+                                      bowlerOvers.toString() +
+                                          "." +
+                                          bowlerBallInAOver.toString())),
+                              flex: 2,
+                            ),
+                          ],
+                        ),
+                        flex: 4,
+                      ),
+                      Flexible(
+                        child: Row(children: <Widget>[
                           Flexible(
                             child: Container(
-                              margin: EdgeInsets.fromLTRB(1, 1, 0, 1),
+                              margin: EdgeInsets.only(
+                                  top: 0, right: 0, left: 1, bottom: 0),
                               height: double.infinity,
                               width: double.infinity,
-                              alignment: Alignment.centerLeft,
-                              color: Colors.green,
-                              child: Text(bowlerName[1] == "."
-                                  ? bowlerName.substring(2, bowlerName.length)
-                                  : bowlerName.substring(3, bowlerName.length)),
+                              alignment: Alignment.center,
+                              color: scoreBackgroundColor,
+                              child: Text(
+                                  style: TextStyle(color: scoreTextColor),
+                                  ball[0]),
                             ),
-                            flex: 5,
+                            flex: 1,
                           ),
                           Flexible(
                             child: Container(
-                                margin: EdgeInsets.fromLTRB(0, 1, 0.5, 1),
-                                height: double.infinity,
-                                width: double.infinity,
-                                alignment: Alignment.center,
-                                color: Colors.green,
-                                child: Text(bowlerWicket.toString() +
-                                    "-" +
-                                    bowlerRunConceded.toString())),
-                            flex: 2,
+                              margin: EdgeInsets.all(0),
+                              height: double.infinity,
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              color: scoreBackgroundColor,
+                              child: Text(
+                                  style: TextStyle(color: scoreTextColor),
+                                  ball[1]),
+                            ),
+                            flex: 1,
                           ),
                           Flexible(
                             child: Container(
-                                margin: EdgeInsets.fromLTRB(0, 1, 1, 1),
-                                height: double.infinity,
-                                width: double.infinity,
-                                alignment: Alignment.center,
-                                color: Colors.green,
-                                child: Text(bowlerOvers.toString() +
-                                    "." +
-                                    bowlerBallInAOver.toString())),
-                            flex: 2,
+                              margin: EdgeInsets.all(0),
+                              height: double.infinity,
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              color: scoreBackgroundColor,
+                              child: Text(
+                                  style: TextStyle(color: scoreTextColor),
+                                  ball[2]),
+                            ),
+                            flex: 1,
                           ),
-                        ],
+                          Flexible(
+                            child: Container(
+                              margin: EdgeInsets.all(0),
+                              height: double.infinity,
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              color: scoreBackgroundColor,
+                              child: Text(
+                                  style: TextStyle(color: scoreTextColor),
+                                  ball[3]),
+                            ),
+                            flex: 1,
+                          ),
+                          Flexible(
+                            child: Container(
+                              margin: EdgeInsets.all(0),
+                              height: double.infinity,
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              color: scoreBackgroundColor,
+                              child: Text(
+                                  style: TextStyle(color: scoreTextColor),
+                                  ball[4]),
+                            ),
+                            flex: 1,
+                          ),
+                          Flexible(
+                            child: Container(
+                              margin: EdgeInsets.all(0),
+                              height: double.infinity,
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              color: scoreBackgroundColor,
+                              child: Text(
+                                  style: TextStyle(color: scoreTextColor),
+                                  ball[5]),
+                            ),
+                            flex: 1,
+                          ),
+                          Flexible(
+                            child: Container(
+                              margin: EdgeInsets.all(0),
+                              height: double.infinity,
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              color: scoreBackgroundColor,
+                              child: Text(
+                                  style: TextStyle(color: scoreTextColor),
+                                  ball[6]),
+                            ),
+                            flex: 1,
+                          ),
+                          Flexible(
+                            child: Container(
+                              margin: EdgeInsets.all(0),
+                              height: double.infinity,
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              color: scoreBackgroundColor,
+                              child: Text(
+                                  style: TextStyle(color: scoreTextColor),
+                                  ball[7]),
+                            ),
+                            flex: 1,
+                          ),
+                          Flexible(
+                            child: Container(
+                              margin: EdgeInsets.all(0),
+                              height: double.infinity,
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              color: scoreBackgroundColor,
+                              child: Text(
+                                  style: TextStyle(color: scoreTextColor),
+                                  ball[8]),
+                            ),
+                            flex: 1,
+                          ),
+                          Flexible(
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                  top: 0, left: 0, bottom: 0, right: 1),
+                              height: double.infinity,
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              color: scoreBackgroundColor,
+                              child: Text(
+                                  style: TextStyle(color: scoreTextColor),
+                                  ball[9]),
+                            ),
+                            flex: 1,
+                          )
+                        ]),
+                        flex: 4,
                       ),
-                      flex: 4,
-                    ),
-                    Flexible(
-                      child: Row(children: <Widget>[
-                        Flexible(
-                          child: Container(
-                            margin: EdgeInsets.all(0),
-                            height: double.infinity,
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            color: Colors.green,
-                            child: Text(ball[0]),
-                          ),
-                          flex: 1,
+                      Flexible(
+                        child: Container(
+                          margin: EdgeInsets.all(1),
+                          height: double.infinity,
+                          width: double.infinity,
+                          alignment: Alignment.centerLeft,
+                          color: scoreBackgroundColor,
+                          child: Text(
+                              style: TextStyle(
+                                  color: scoreTextColor, fontSize: 13),
+                              " LAST 10 BALLS"),
                         ),
-                        Flexible(
-                          child: Container(
-                            margin: EdgeInsets.all(0),
-                            height: double.infinity,
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            color: Colors.green,
-                            child: Text(ball[1]),
-                          ),
-                          flex: 1,
-                        ),
-                        Flexible(
-                          child: Container(
-                            margin: EdgeInsets.all(0),
-                            height: double.infinity,
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            color: Colors.green,
-                            child: Text(ball[2]),
-                          ),
-                          flex: 1,
-                        ),
-                        Flexible(
-                          child: Container(
-                            margin: EdgeInsets.all(0),
-                            height: double.infinity,
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            color: Colors.green,
-                            child: Text(ball[3]),
-                          ),
-                          flex: 1,
-                        ),
-                        Flexible(
-                          child: Container(
-                            margin: EdgeInsets.all(0),
-                            height: double.infinity,
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            color: Colors.green,
-                            child: Text(ball[4]),
-                          ),
-                          flex: 1,
-                        ),
-                        Flexible(
-                          child: Container(
-                            margin: EdgeInsets.all(0),
-                            height: double.infinity,
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            color: Colors.green,
-                            child: Text(ball[5]),
-                          ),
-                          flex: 1,
-                        ),
-                        Flexible(
-                          child: Container(
-                            margin: EdgeInsets.all(0),
-                            height: double.infinity,
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            color: Colors.green,
-                            child: Text(ball[6]),
-                          ),
-                          flex: 1,
-                        ),
-                        Flexible(
-                          child: Container(
-                            margin: EdgeInsets.all(0),
-                            height: double.infinity,
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            color: Colors.green,
-                            child: Text(ball[7]),
-                          ),
-                          flex: 1,
-                        ),
-                        Flexible(
-                          child: Container(
-                            margin: EdgeInsets.all(0),
-                            height: double.infinity,
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            color: Colors.green,
-                            child: Text(ball[8]),
-                          ),
-                          flex: 1,
-                        ),
-                        Flexible(
-                          child: Container(
-                            margin: EdgeInsets.all(0),
-                            height: double.infinity,
-                            width: double.infinity,
-                            alignment: Alignment.center,
-                            color: Colors.green,
-                            child: Text(ball[9]),
-                          ),
-                          flex: 1,
-                        )
-                      ]),
-                      flex: 4,
-                    ),
-                    Flexible(
-                      child: Container(
-                        margin: EdgeInsets.all(1),
-                        height: double.infinity,
-                        width: double.infinity,
-                        alignment: Alignment.centerLeft,
-                        color: Colors.green,
-                        child: Text(" LAST 10 BALLS"),
+                        flex: 3,
                       ),
-                      flex: 3,
-                    ),
-                  ],
+                    ],
+                  ),
+                  flex: 4,
                 ),
-                flex: 4,
-              ),
-            ],
+              ],
+            ),
           ),
           flex: 4,
         ),
@@ -2081,11 +2161,7 @@ class _ScorePageState extends State<ScorePage> {
         match.firstInnings.totalRun,
         match.firstInnings.wicket);
 
-    if (match.firstInnings.onBatting == match.team1Uid) {
-      match.firstInningsOverTracking.add(overTracking);
-    } else {
-      match.secondInningsOverTracking.add(overTracking);
-    }
+    match.firstInningsOverTracking.add(overTracking.toJson());
   }
 
   Widget dropDownField(

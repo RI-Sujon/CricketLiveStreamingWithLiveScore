@@ -279,6 +279,12 @@ class _NewMatchCreationState extends State<NewMatchCreation> {
       onBatting1 = teamName[1].substring(0, 20);
       onBatting2 = teamName[0].substring(0, 20);
     }
+
+    OverTracking overTracking = OverTracking("", 0, 0, 0);
+    List overTrakingList = [];
+
+    overTrakingList.add(overTracking);
+
     Match match = Match(
         _matchController.text,
         teamName[0].substring(23, teamName[0].length),
@@ -290,7 +296,11 @@ class _NewMatchCreationState extends State<NewMatchCreation> {
         _oversController.text,
         firebaseUser.uid,
         Innings(onBatting1, 0, 0, 0, 0, "", "", "", 0, 0),
-        Innings(onBatting2, 0, 0, 0, 0, "", "", "", 0, 0), [], [], [], []);
+        Innings(onBatting2, 0, 0, 0, 0, "", "", "", 0, 0),
+        [],
+        [],
+        overTrakingList,
+        overTrakingList);
 
     var docId = DateTime.now().millisecondsSinceEpoch.toString();
     await FirebaseFirestore.instance

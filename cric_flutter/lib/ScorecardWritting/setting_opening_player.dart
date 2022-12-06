@@ -25,6 +25,8 @@ class _SettingOpeningPlayerState extends State<SettingOpeningPlayer> {
   late Match match;
   late String matchId;
 
+  int flag = 0;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -58,7 +60,9 @@ class _SettingOpeningPlayerState extends State<SettingOpeningPlayer> {
     print(selectedPlayer[1]);
     print(selectedPlayer[2]);
 
-    setState(() {});
+    setState(() {
+      flag == 1;
+    });
   }
 
   @override
@@ -74,20 +78,23 @@ class _SettingOpeningPlayerState extends State<SettingOpeningPlayer> {
               padding: EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  match.firstInnings.onBatting == match.team1Uid &&
-                          match.tossWin == match.team1Name
-                      ? Text(team1.teamName +
-                          " won the toss and opted to bat first.")
-                      : match.firstInnings.onBatting == match.team2Uid &&
-                              match.tossWin == match.team2Name
-                          ? Text(team2.teamName +
+                  flag == 1
+                      ? match.firstInnings.onBatting == match.team1Uid &&
+                              match.tossWin == match.team1Name
+                          ? Text(team1.teamName +
                               " won the toss and opted to bat first.")
                           : match.firstInnings.onBatting == match.team2Uid &&
-                                  match.tossWin == match.team1Name
-                              ? Text(team1.teamName +
-                                  " won the toss and opted to field first.")
-                              : Text(team2.teamName +
-                                  " won the toss and opted to field first."),
+                                  match.tossWin == match.team2Name
+                              ? Text(team2.teamName +
+                                  " won the toss and opted to bat first.")
+                              : match.firstInnings.onBatting ==
+                                          match.team2Uid &&
+                                      match.tossWin == match.team1Name
+                                  ? Text(team1.teamName +
+                                      " won the toss and opted to field first.")
+                                  : Text(team2.teamName +
+                                      " won the toss and opted to field first.")
+                      : Container(),
                   SizedBox(
                     height: 40,
                   ),
@@ -193,8 +200,14 @@ class _SettingOpeningPlayerState extends State<SettingOpeningPlayer> {
       team1Players.add(player3.toJson());
     }
 
+    List<dynamic> firstInningsOverTracking = [];
+    List<dynamic> secondInningsOverTracking = [];
+
     match.team1Players = team1Players;
     match.team2Players = team2Players;
+
+    match.firstInningsOverTracking = firstInningsOverTracking;
+    match.secondInningsOverTracking = secondInningsOverTracking;
 
     await FirebaseFirestore.instance
         .collection("Match")

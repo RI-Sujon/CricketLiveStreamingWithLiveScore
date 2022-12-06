@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cric_flutter/LiveStreamC/pages/home_page.dart';
 import 'package:cric_flutter/Pages/common/custom_option_button.dart';
+import 'package:cric_flutter/Pages/get_match_id.dart';
 import 'package:cric_flutter/Pages/model/Model.dart';
 import 'package:cric_flutter/ScorecardWritting/scorecard_writing.dart';
 import 'package:cric_flutter/ScorecardWritting/setting_opening_player.dart';
@@ -63,16 +64,17 @@ class _MatchHomePageState extends State<MatchHomePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Match Home Page"),
+          title: Text(match.matchName),
           backgroundColor: Color(0xff233743),
         ),
         body: Center(
+            child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CustomOptionButton(
-                innerText: 'Score Writting',
+                innerText: 'Write Score',
                 onPressed: () {
                   Route route =
                       MaterialPageRoute(builder: (_) => SettingOpeningPlayer());
@@ -83,27 +85,19 @@ class _MatchHomePageState extends State<MatchHomePage> {
                 height: 30,
               ),
               CustomOptionButton(
-                innerText: "Video Recording",
+                innerText: "View Match ID",
                 onPressed: () {
                   Route route = MaterialPageRoute(
-                      builder: (_) => LiveStreamHomePage("video"));
+                      builder: (_) => GetMatchId(matchId: matchId));
                   Navigator.push(context, route);
                 },
               ),
               SizedBox(
                 height: 30,
               ),
-              CustomOptionButton(
-                innerText: "Audio Commentry",
-                onPressed: () {
-                  Route route = MaterialPageRoute(
-                      builder: (_) => LiveStreamHomePage("audio"));
-                  Navigator.push(context, route);
-                },
-              ),
             ],
           ),
-        ),
+        )),
       ),
     );
   }

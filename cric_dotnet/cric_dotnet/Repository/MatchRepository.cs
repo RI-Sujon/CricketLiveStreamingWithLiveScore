@@ -121,6 +121,28 @@ namespace cric_dotnet.Repository
                     match.team2Players = players;
                 }
 
+                else if (pair.Key == "firstInningsOverTracking")
+                {
+                    List<OverTracking> overTrackings = new List<OverTracking>();
+                    foreach (var p in pair.Value)
+                    {
+                        overTrackings.Add(convertToOverTracking(p));
+                    }
+
+                    match.firstInningsOverTracking = overTrackings;
+                }
+
+                else if (pair.Key == "secondInningsOverTracking")
+                {
+                    List<OverTracking> overTrackings = new List<OverTracking>();
+                    foreach (var p in pair.Value)
+                    {
+                        overTrackings.Add(convertToOverTracking(p));
+                    }
+
+                    match.secondInningsOverTracking = overTrackings;
+                }
+
             }
 
             return match;
@@ -166,6 +188,29 @@ namespace cric_dotnet.Repository
 
             return innings;
         }
+
+        public OverTracking convertToOverTracking(dynamic pairValue)
+        {
+            OverTracking overTracking = new OverTracking();
+
+            foreach (KeyValuePair<string, dynamic> pair in pairValue)
+            {
+                if (pair.Key == "bowlerName")
+                    overTracking.bowlerName = pair.Value;
+
+                else if (pair.Key == "overNo")
+                    overTracking.overNo = (int)pair.Value;
+
+                else if (pair.Key == "totalRun")
+                    overTracking.totalRun = (int)pair.Value;
+
+                else if (pair.Key == "wicket")
+                    overTracking.wicket = (int)pair.Value;
+            }
+
+            return overTracking;
+        }
+
 
         public PlayerInnings convertToPlayerInnings(dynamic pairValue) 
         {
