@@ -18,6 +18,7 @@ class MatchHomePage extends StatefulWidget {
 class _MatchHomePageState extends State<MatchHomePage> {
   late Match match;
   late String matchId;
+  late bool flag = true;
 
   @override
   void initState() {
@@ -29,7 +30,9 @@ class _MatchHomePageState extends State<MatchHomePage> {
   void getMatch() async {
     match = Match.fromJson(await Glutton.vomit("Match"));
     matchId = await Glutton.vomit("MatchId");
-    setState(() {});
+    setState(() {
+      flag = false;
+    });
     getTeam();
   }
 
@@ -64,7 +67,7 @@ class _MatchHomePageState extends State<MatchHomePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(match.matchName),
+          title: flag ? Text("Match") : Text(match.matchName),
           backgroundColor: Color(0xff233743),
         ),
         body: Center(
@@ -76,9 +79,25 @@ class _MatchHomePageState extends State<MatchHomePage> {
               CustomOptionButton(
                 innerText: 'Write Score',
                 onPressed: () {
-                  Route route =
-                      MaterialPageRoute(builder: (_) => SettingOpeningPlayer());
-                  Navigator.push(context, route);
+                  if (match.team1Players.length == 0) {
+                    Route route = MaterialPageRoute(
+                        builder: (_) => SettingOpeningPlayer(
+                              innings: "First Innings",
+                            ));
+                    Navigator.push(context, route);
+                  } else {
+                    if (match.secondInnings.batsmanOnStrike == "") {
+                      Route route = MaterialPageRoute(
+                          builder: (_) => SettingOpeningPlayer(
+                                innings: "Second Innings",
+                              ));
+                      Navigator.push(context, route);
+                    } else {
+                      Route route =
+                          MaterialPageRoute(builder: (_) => ScorePage());
+                      Navigator.push(context, route);
+                    }
+                  }
                 },
               ),
               SizedBox(

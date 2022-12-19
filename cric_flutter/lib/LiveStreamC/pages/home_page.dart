@@ -47,7 +47,7 @@ class _LiveStreamHomePageState extends State<LiveStreamHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Connect With A Match"),
+          title: Text("Connect with a Match"),
           backgroundColor: Color(0xff233743),
         ),
         body: Center(

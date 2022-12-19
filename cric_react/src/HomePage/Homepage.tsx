@@ -10,6 +10,7 @@ import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { width } from '@mui/system';
 
 export default function HomePage() {
 
@@ -46,31 +47,26 @@ export default function HomePage() {
         console.log("2222222222+:" + matchList.matchList.length);
         console.log("22222222333:" + matchList.matchList[0].matchName);
         for (let i = 0; i < matchList.matchList.length; i++) {
-          item.push(<ListItem disablePadding key={i} onClick={() => {
+          item.push(<ListItem style={{backgroundColor: '#baccf5', padding: 7, borderRadius: 10, margin: 10}} disablePadding key={i} onClick={() => {
             navigate("/match/"+matchList.matchList[i].matchId);
-          }}><ListItemButton>{matchList.matchList[i].matchName}</ListItemButton></ListItem>);
-          
-          if(i!=matchList.matchList.length-1)
-          item.push(<Divider />);
+          }}><ListItemButton><div><b><big>{matchList.matchList[i].matchName}</big></b><br/>{matchList.matchList[i].team1Name} vs {matchList.matchList[i].team2Name}</div></ListItemButton></ListItem>);
         }
         }
         return item;
       };
 
     return (
-        <div style={{alignItems: 'center', width: '100%'}}>
+        <div style={{alignItems: 'center', paddingLeft:20}}>
 
-            {/* <List>
-                {renderTD()}
-            </List> */}
+            <h1 style={{paddingLeft: 15}}>Match List</h1>
             
-            <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      <nav aria-label="main mailbox folders">
+            <Box sx={{width: 500}}>
+      {/* <nav aria-label="main mailbox folders"> */}
         <List>
         {renderTD()}
         </List>
-      </nav>
-      <Divider />
+      {/* </nav> */}
+      
       
     </Box>
         </div>

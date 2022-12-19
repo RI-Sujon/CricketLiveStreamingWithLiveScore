@@ -236,7 +236,7 @@ class Dismissal {
 }
 
 class Team {
-  String teamName = "";
+  String teamName = "team";
   List<dynamic> players;
 
   Team(this.teamName, this.players);
@@ -262,7 +262,7 @@ class Team {
 }
 
 class Player {
-  String name = "";
+  String name = "Player";
   String battingStyle = "";
   String bowlingStyle = "";
   String category = "";

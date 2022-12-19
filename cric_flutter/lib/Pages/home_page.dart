@@ -148,7 +148,7 @@ class _HomePageState extends State<HomePage> {
                 height: 30,
               ),
               CustomOptionButton(
-                innerText: 'Create A New Match',
+                innerText: 'Create New Match',
                 onPressed: () {
                   Route route =
                       MaterialPageRoute(builder: (_) => NewMatchCreation());
@@ -179,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                 height: 30,
               ),
               CustomOptionButton(
-                innerText: 'Connect With A Match',
+                innerText: 'Connect with a Match',
                 onPressed: () {
                   Route route =
                       MaterialPageRoute(builder: (_) => ConnectWithMatch());

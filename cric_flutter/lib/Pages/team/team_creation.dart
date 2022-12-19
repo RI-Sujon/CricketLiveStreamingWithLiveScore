@@ -66,7 +66,7 @@ class _TeamCreationState extends State<TeamCreation> {
     return SafeArea(
         child: Scaffold(
             appBar: AppBar(
-              title: Text("Cric App"),
+              title: Text("Create Team"),
               backgroundColor: Color(0xff233743),
             ),
             body: SingleChildScrollView(

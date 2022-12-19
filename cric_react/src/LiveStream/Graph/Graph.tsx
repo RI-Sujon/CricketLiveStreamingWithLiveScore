@@ -30,11 +30,12 @@ export default function Graph(props: any) {
     wicket[0]=0;
     runRate[0]=0;
 
-    for(var i=0; i< props.matchData.overs; i++){
-      over[i+1]=i+1;
-    }
+    // for(var i=0; i< props.matchData.overs; i++){
+    //   over[i+1]=i+1;
+    // }
 
     for(var i=0; i<props.matchData.firstInningsOverTracking.length; i++){
+      over[i+1] = i+1 ;
       totalRun[i+1] = props.matchData.firstInningsOverTracking[i].totalRun;
       wicket[i+1] = props.matchData.firstInningsOverTracking[i].wicket;
 
@@ -119,10 +120,20 @@ export default function Graph(props: any) {
     };
 
     return <div style={{padding: 100}}>
+          
+          <div style={{backgroundColor: 'white', padding: 10}}>
+            Run Comparison Graph
           <ReactApexChart series={series} options={option} type="line" height={350} />
+          </div>
           <br />
+          <div style={{backgroundColor: 'white', padding: 10}}>
+          Run Per Over Graph
           <ReactApexChart series={series2} options={option2} type="bar" height={350} />
+          </div>
           <br />
+          <div style={{backgroundColor: 'white', padding: 10}}>
+          Run Rate Comparison Graph
           <ReactApexChart series={series3} options={option} type="line" yaxis={yaxis} height={350} />
+          </div>
     </div>
 }

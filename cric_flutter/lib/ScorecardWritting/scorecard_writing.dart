@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cric_flutter/Pages/common/custom_option_button.dart';
 import 'package:cric_flutter/Pages/model/Model.dart';
+import 'package:cric_flutter/ScorecardWritting/setting_opening_player.dart';
 // import 'package:cric_flutter/ScorecardWritting/json_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,8 +28,8 @@ class _ScorePageState extends State<ScorePage> {
 
   String battingTeamName = " ", bowlingTeamName = " ", innings = "1st Innings";
 
-  String batsmanOneName = " ",
-      batsmanTwoName = " ",
+  String batsmanOneName = "Player1",
+      batsmanTwoName = "Player2",
       isOnStrikeBatsmanOne = "@",
       isOnStrikeBatsmanTwo = "";
 
@@ -143,6 +144,8 @@ class _ScorePageState extends State<ScorePage> {
   late Team team2;
   late String matchId;
 
+  int flag = 0;
+
   @override
   void initState() {
     getMatchInfo();
@@ -154,29 +157,184 @@ class _ScorePageState extends State<ScorePage> {
     team2 = Team.fromJson(await Glutton.vomit("Team2"));
     matchId = await Glutton.vomit("MatchId");
 
-    if (match.firstInnings.onBatting == match.team1Uid) {
-      battingTeamName = match.team1Name;
-      bowlingTeamName = match.team2Name;
-      batsmanOneName = match.team1Players[0]['name'];
-      batsmanTwoName = match.team1Players[1]['name'];
-      bowlerName = match.team2Players[0]['name'];
-    } else {
-      battingTeamName = match.team2Name;
-      bowlingTeamName = match.team1Name;
-      batsmanOneName = match.team2Players[0]["name"];
-      batsmanTwoName = match.team2Players[1]["name"];
-      bowlerName = match.team1Players[0]["name"];
-    }
+    bool b1Out = false, b2Out = false;
 
-    if (match.firstInnings.onBatting == match.team1Uid) {
-      for (int i = 0; i < 16; i++) {
-        teamNameList1.add((i + 1).toString() + ". " + team1.players[i].name);
-        teamNameList2.add((i + 1).toString() + ". " + team2.players[i].name);
+    if (match.secondInnings.target == 0) {
+      if (match.firstInnings.onBatting == match.team1Uid) {
+        battingTeamName = match.team1Name;
+        bowlingTeamName = match.team2Name;
+      } else {
+        battingTeamName = match.team2Name;
+        bowlingTeamName = match.team1Name;
+      }
+
+      totalRun = match.firstInnings.totalRun;
+      wicket = match.firstInnings.wicket;
+      overs = match.firstInnings.overs;
+      ballInAOver = match.firstInnings.ballInAOver;
+      extraRun = match.firstInnings.extras;
+
+      batsmanOneName = match.firstInnings.batsmanOnStrike;
+      batsmanTwoName = match.firstInnings.batsmanOnNonStrike;
+      bowlerName = match.firstInnings.bowler;
+
+      if (match.firstInnings.onBatting == match.team1Uid) {
+        for (int i = 0; i < match.team1Players.length; i++) {
+          PlayerInnings playerInnings =
+              PlayerInnings.fromJson(match.team1Players[i]);
+          if (playerInnings.name == batsmanOneName) {
+            batsmanOneRun = playerInnings.batting.run;
+            batsmanOneBallConceded = playerInnings.batting.ball;
+            if (playerInnings.batting.isOut == true) {
+              b1Out = true;
+            }
+          } else if (playerInnings.name == batsmanTwoName) {
+            batsmanTwoRun = playerInnings.batting.run;
+            batsmanTwoBallConceded = playerInnings.batting.ball;
+            if (playerInnings.batting.isOut == true) {
+              b2Out = true;
+            }
+          }
+        }
+
+        for (int i = 0; i < match.team2Players.length; i++) {
+          PlayerInnings playerInnings =
+              PlayerInnings.fromJson(match.team2Players[i]);
+          if (playerInnings.name == bowlerName) {
+            bowlerOvers = playerInnings.bowling.over;
+            bowlerBallInAOver = playerInnings.bowling.ballInAOver;
+            bowlerWicket = playerInnings.bowling.wicket;
+            bowlerRunConceded = playerInnings.bowling.runConceded;
+          }
+        }
+      } else {
+        for (int i = 0; i < match.team2Players.length; i++) {
+          PlayerInnings playerInnings =
+              PlayerInnings.fromJson(match.team2Players[i]);
+          if (playerInnings.name == batsmanOneName) {
+            batsmanOneRun = playerInnings.batting.run;
+            batsmanOneBallConceded = playerInnings.batting.ball;
+          } else if (playerInnings.name == batsmanTwoName) {
+            batsmanTwoRun = playerInnings.batting.run;
+            batsmanTwoBallConceded = playerInnings.batting.ball;
+          }
+        }
+
+        for (int i = 0; i < match.team1Players.length; i++) {
+          PlayerInnings playerInnings =
+              PlayerInnings.fromJson(match.team1Players[i]);
+          if (playerInnings.name == bowlerName) {
+            bowlerOvers = playerInnings.bowling.over;
+            bowlerBallInAOver = playerInnings.bowling.ballInAOver;
+            bowlerWicket = playerInnings.bowling.wicket;
+            bowlerRunConceded = playerInnings.bowling.runConceded;
+          }
+        }
       }
     } else {
-      for (int i = 0; i < 16; i++) {
-        teamNameList1.add((i + 1).toString() + ". " + team2.players[i].name);
-        teamNameList2.add((i + 1).toString() + ". " + team1.players[i].name);
+      innings = "2nd Innings";
+
+      if (match.firstInnings.onBatting == match.team1Uid) {
+        battingTeamName = match.team2Name;
+        bowlingTeamName = match.team1Name;
+      } else {
+        battingTeamName = match.team1Name;
+        bowlingTeamName = match.team2Name;
+      }
+
+      totalRun = match.secondInnings.totalRun;
+      wicket = match.secondInnings.wicket;
+      overs = match.secondInnings.overs;
+      ballInAOver = match.secondInnings.ballInAOver;
+      extraRun = match.secondInnings.extras;
+
+      batsmanOneName = match.secondInnings.batsmanOnStrike;
+      batsmanTwoName = match.secondInnings.batsmanOnNonStrike;
+      bowlerName = match.secondInnings.bowler;
+
+      if (match.secondInnings.onBatting == match.team1Uid) {
+        for (int i = 0; i < match.team1Players.length; i++) {
+          PlayerInnings playerInnings =
+              PlayerInnings.fromJson(match.team1Players[i]);
+          if (playerInnings.name == batsmanOneName) {
+            batsmanOneRun = playerInnings.batting.run;
+            batsmanOneBallConceded = playerInnings.batting.ball;
+            if (playerInnings.batting.isOut == true) {
+              b1Out = true;
+            }
+          } else if (playerInnings.name == batsmanTwoName) {
+            batsmanTwoRun = playerInnings.batting.run;
+            batsmanTwoBallConceded = playerInnings.batting.ball;
+            if (playerInnings.batting.isOut == true) {
+              b2Out = true;
+            }
+          }
+        }
+
+        for (int i = 0; i < match.team2Players.length; i++) {
+          PlayerInnings playerInnings =
+              PlayerInnings.fromJson(match.team2Players[i]);
+          if (playerInnings.name == bowlerName) {
+            bowlerOvers = playerInnings.bowling.over;
+            bowlerBallInAOver = playerInnings.bowling.ballInAOver;
+            bowlerWicket = playerInnings.bowling.wicket;
+            bowlerRunConceded = playerInnings.bowling.runConceded;
+          }
+        }
+      } else {
+        for (int i = 0; i < match.team2Players.length; i++) {
+          PlayerInnings playerInnings =
+              PlayerInnings.fromJson(match.team2Players[i]);
+          if (playerInnings.name == batsmanOneName) {
+            batsmanOneRun = playerInnings.batting.run;
+            batsmanOneBallConceded = playerInnings.batting.ball;
+          } else if (playerInnings.name == batsmanTwoName) {
+            batsmanTwoRun = playerInnings.batting.run;
+            batsmanTwoBallConceded = playerInnings.batting.ball;
+          }
+        }
+
+        for (int i = 0; i < match.team1Players.length; i++) {
+          PlayerInnings playerInnings =
+              PlayerInnings.fromJson(match.team1Players[i]);
+          if (playerInnings.name == bowlerName) {
+            bowlerOvers = playerInnings.bowling.over;
+            bowlerBallInAOver = playerInnings.bowling.ballInAOver;
+            bowlerWicket = playerInnings.bowling.wicket;
+            bowlerRunConceded = playerInnings.bowling.runConceded;
+          }
+        }
+      }
+    }
+    //  else {
+    //   batsmanOneName = match.secondInnings.batsmanOnStrike;
+    //   batsmanTwoName = match.secondInnings.batsmanOnNonStrike;
+    //   bowlerName = match.secondInnings.bowler;
+    // }
+
+    if (match.secondInnings.target == 0) {
+      if (match.firstInnings.onBatting == match.team1Uid) {
+        for (int i = 0; i < 16; i++) {
+          teamNameList1.add((i + 1).toString() + ". " + team1.players[i].name);
+          teamNameList2.add((i + 1).toString() + ". " + team2.players[i].name);
+        }
+      } else {
+        for (int i = 0; i < 16; i++) {
+          teamNameList1.add((i + 1).toString() + ". " + team2.players[i].name);
+          teamNameList2.add((i + 1).toString() + ". " + team1.players[i].name);
+        }
+      }
+    } else {
+      if (match.firstInnings.onBatting == match.team1Uid) {
+        for (int i = 0; i < 16; i++) {
+          teamNameList1.add((i + 1).toString() + ". " + team2.players[i].name);
+          teamNameList2.add((i + 1).toString() + ". " + team1.players[i].name);
+        }
+      } else {
+        for (int i = 0; i < 16; i++) {
+          teamNameList1.add((i + 1).toString() + ". " + team1.players[i].name);
+          teamNameList2.add((i + 1).toString() + ". " + team2.players[i].name);
+        }
       }
     }
 
@@ -185,81 +343,167 @@ class _ScorePageState extends State<ScorePage> {
     selectedPlayer[2] = teamNameList2[0];
     selectedDismissalType = dismissalList[0];
 
-    setState(() {});
+    setState(() {
+      flag = 1;
+      if (ballInAOver == 0 && overs != 0) {
+        print(ballInAOver.toString() + ":888888:" + overs.toString());
+        isChangeBowlerScreenOpen = true;
+      }
+      if (b1Out) {
+        isChangeBatsmanScreenOpen = true;
+      } else if (b2Out) {
+        changeBatsmanStrike();
+        isChangeBatsmanScreenOpen = true;
+      }
+    });
   }
 
   updateFirestore() async {
-    match.firstInnings.totalRun = totalRun;
-    match.firstInnings.wicket = wicket;
-    match.firstInnings.overs = overs;
-    match.firstInnings.ballInAOver = ballInAOver;
-    if (batsmanOneOnStrike) {
-      match.firstInnings.batsmanOnStrike = batsmanOneName;
-      match.firstInnings.batsmanOnNonStrike = batsmanTwoName;
+    if (match.secondInnings.target == 0) {
+      match.firstInnings.totalRun = totalRun;
+      match.firstInnings.wicket = wicket;
+      match.firstInnings.overs = overs;
+      match.firstInnings.ballInAOver = ballInAOver;
+      if (batsmanOneOnStrike) {
+        match.firstInnings.batsmanOnStrike = batsmanOneName;
+        match.firstInnings.batsmanOnNonStrike = batsmanTwoName;
+      } else {
+        match.firstInnings.batsmanOnStrike = batsmanTwoName;
+        match.firstInnings.batsmanOnNonStrike = batsmanOneName;
+      }
+      match.firstInnings.bowler = bowlerName;
+      match.firstInnings.extras = extraRun;
+
+      List<dynamic> team1players = [];
+      match.team1Players.forEach((element) {
+        PlayerInnings playerInnings = PlayerInnings.fromJson(element);
+        if (match.firstInnings.onBatting == match.team1Uid) {
+          if (playerInnings.name == batsmanOneName) {
+            playerInnings.batting.ball = batsmanOneBallConceded;
+            playerInnings.batting.run = batsmanOneRun;
+          } else if (element['name'] == batsmanTwoName) {
+            playerInnings.batting.ball = batsmanTwoBallConceded;
+            playerInnings.batting.run = batsmanTwoRun;
+          }
+        } else {
+          if (playerInnings.name == bowlerName) {
+            playerInnings.bowling.runConceded = bowlerRunConceded;
+            playerInnings.bowling.over = bowlerOvers;
+            playerInnings.bowling.ballInAOver = bowlerBallInAOver;
+            playerInnings.bowling.wicket = bowlerWicket;
+          }
+        }
+
+        team1players.add(playerInnings.toJson());
+      });
+
+      match.team1Players = team1players;
+
+      List<dynamic> team2players = [];
+      match.team2Players.forEach((element) {
+        PlayerInnings playerInnings = PlayerInnings.fromJson(element);
+        if (match.firstInnings.onBatting == match.team1Uid) {
+          if (playerInnings.name == bowlerName) {
+            playerInnings.bowling.runConceded = bowlerRunConceded;
+            playerInnings.bowling.over = bowlerOvers;
+            playerInnings.bowling.ballInAOver = bowlerBallInAOver;
+            playerInnings.bowling.wicket = bowlerWicket;
+          }
+        } else {
+          if (playerInnings.name == batsmanOneName) {
+            playerInnings.batting.ball = batsmanOneBallConceded;
+            playerInnings.batting.run = batsmanOneRun;
+          } else if (element['name'] == batsmanTwoName) {
+            playerInnings.batting.ball = batsmanTwoBallConceded;
+            playerInnings.batting.run = batsmanTwoRun;
+          }
+        }
+
+        team2players.add(playerInnings.toJson());
+      });
+
+      match.team2Players = team2players;
+
+      await FirebaseFirestore.instance
+          .collection("Match")
+          .doc(matchId)
+          .set(match.toJson())
+          .then((value) async {
+        print("Score Updated");
+      });
     } else {
-      match.firstInnings.batsmanOnStrike = batsmanTwoName;
-      match.firstInnings.batsmanOnNonStrike = batsmanOneName;
+      match.secondInnings.totalRun = totalRun;
+      match.secondInnings.wicket = wicket;
+      match.secondInnings.overs = overs;
+      match.secondInnings.ballInAOver = ballInAOver;
+      if (batsmanOneOnStrike) {
+        match.secondInnings.batsmanOnStrike = batsmanOneName;
+        match.secondInnings.batsmanOnNonStrike = batsmanTwoName;
+      } else {
+        match.secondInnings.batsmanOnStrike = batsmanTwoName;
+        match.secondInnings.batsmanOnNonStrike = batsmanOneName;
+      }
+      match.secondInnings.bowler = bowlerName;
+      match.secondInnings.extras = extraRun;
+
+      List<dynamic> team2players = [];
+      match.team2Players.forEach((element) {
+        PlayerInnings playerInnings = PlayerInnings.fromJson(element);
+        if (match.firstInnings.onBatting == match.team1Uid) {
+          if (playerInnings.name == batsmanOneName) {
+            playerInnings.batting.ball = batsmanOneBallConceded;
+            playerInnings.batting.run = batsmanOneRun;
+          } else if (element['name'] == batsmanTwoName) {
+            playerInnings.batting.ball = batsmanTwoBallConceded;
+            playerInnings.batting.run = batsmanTwoRun;
+          }
+        } else {
+          if (playerInnings.name == bowlerName) {
+            playerInnings.bowling.runConceded = bowlerRunConceded;
+            playerInnings.bowling.over = bowlerOvers;
+            playerInnings.bowling.ballInAOver = bowlerBallInAOver;
+            playerInnings.bowling.wicket = bowlerWicket;
+          }
+        }
+
+        team2players.add(playerInnings.toJson());
+      });
+
+      match.team2Players = team2players;
+
+      List<dynamic> team1players = [];
+      match.team1Players.forEach((element) {
+        PlayerInnings playerInnings = PlayerInnings.fromJson(element);
+        if (match.firstInnings.onBatting == match.team1Uid) {
+          if (playerInnings.name == bowlerName) {
+            playerInnings.bowling.runConceded = bowlerRunConceded;
+            playerInnings.bowling.over = bowlerOvers;
+            playerInnings.bowling.ballInAOver = bowlerBallInAOver;
+            playerInnings.bowling.wicket = bowlerWicket;
+          }
+        } else {
+          if (playerInnings.name == batsmanOneName) {
+            playerInnings.batting.ball = batsmanOneBallConceded;
+            playerInnings.batting.run = batsmanOneRun;
+          } else if (element['name'] == batsmanTwoName) {
+            playerInnings.batting.ball = batsmanTwoBallConceded;
+            playerInnings.batting.run = batsmanTwoRun;
+          }
+        }
+
+        team1players.add(playerInnings.toJson());
+      });
+
+      match.team1Players = team1players;
+
+      await FirebaseFirestore.instance
+          .collection("Match")
+          .doc(matchId)
+          .set(match.toJson())
+          .then((value) async {
+        print("Score Updated");
+      });
     }
-    match.firstInnings.bowler = bowlerName;
-    match.firstInnings.extras = extraRun;
-
-    List<dynamic> team1players = [];
-    match.team1Players.forEach((element) {
-      PlayerInnings playerInnings = PlayerInnings.fromJson(element);
-      if (match.firstInnings.onBatting == match.team1Uid) {
-        if (playerInnings.name == batsmanOneName) {
-          playerInnings.batting.ball = batsmanOneBallConceded;
-          playerInnings.batting.run = batsmanOneRun;
-        } else if (element['name'] == batsmanTwoName) {
-          playerInnings.batting.ball = batsmanTwoBallConceded;
-          playerInnings.batting.run = batsmanTwoRun;
-        }
-      } else {
-        if (playerInnings.name == bowlerName) {
-          playerInnings.bowling.runConceded = bowlerRunConceded;
-          playerInnings.bowling.over = bowlerOvers;
-          playerInnings.bowling.ballInAOver = bowlerBallInAOver;
-          playerInnings.bowling.wicket = bowlerWicket;
-        }
-      }
-
-      team1players.add(playerInnings.toJson());
-    });
-
-    match.team1Players = team1players;
-
-    List<dynamic> team2players = [];
-    match.team2Players.forEach((element) {
-      PlayerInnings playerInnings = PlayerInnings.fromJson(element);
-      if (match.firstInnings.onBatting == match.team1Uid) {
-        if (playerInnings.name == bowlerName) {
-          playerInnings.bowling.runConceded = bowlerRunConceded;
-          playerInnings.bowling.over = bowlerOvers;
-          playerInnings.bowling.ballInAOver = bowlerBallInAOver;
-          playerInnings.bowling.wicket = bowlerWicket;
-        }
-      } else {
-        if (playerInnings.name == batsmanOneName) {
-          playerInnings.batting.ball = batsmanOneBallConceded;
-          playerInnings.batting.run = batsmanOneRun;
-        } else if (element['name'] == batsmanTwoName) {
-          playerInnings.batting.ball = batsmanTwoBallConceded;
-          playerInnings.batting.run = batsmanTwoRun;
-        }
-      }
-
-      team2players.add(playerInnings.toJson());
-    });
-
-    match.team2Players = team2players;
-
-    await FirebaseFirestore.instance
-        .collection("Match")
-        .doc(matchId)
-        .set(match.toJson())
-        .then((value) async {
-      print("Score Updated");
-    });
   }
 
   textBarController(String keyType, int run) {
@@ -739,6 +983,17 @@ class _ScorePageState extends State<ScorePage> {
       // changeBatsmanStrike();
       setState(() {
         isChangeBowlerScreenOpen = true;
+        if (overs == match.overs) {
+          isChangeBowlerScreenOpen = false;
+          match.secondInnings.target = totalRun + 1;
+          addOverTrackingOperation();
+          updateFirestore();
+          Route route = MaterialPageRoute(
+              builder: (_) => SettingOpeningPlayer(
+                    innings: "Second Innings",
+                  ));
+          Navigator.push(context, route);
+        }
       });
     }
   }
@@ -996,11 +1251,13 @@ class _ScorePageState extends State<ScorePage> {
 
     return SafeArea(
         child: Scaffold(
-            body: isChangeBatsmanScreenOpen
-                ? changeBatsman(context)
-                : isChangeBowlerScreenOpen
-                    ? changeBowler(context)
-                    : writeScore(context)));
+            body: flag != 1
+                ? Text("Loading")
+                : isChangeBatsmanScreenOpen
+                    ? changeBatsman(context)
+                    : isChangeBowlerScreenOpen
+                        ? changeBowler(context)
+                        : writeScore(context)));
   }
 
   Widget writeScore(BuildContext context) {
@@ -1985,38 +2242,78 @@ class _ScorePageState extends State<ScorePage> {
     Dismissal dismissal = Dismissal(
         selectedDismissalType, batsmanName, bowlerName, selectedPlayer[2]);
 
-    if (match.firstInnings.onBatting == match.team1Uid) {
-      List<dynamic> team1players = [];
-      match.team1Players.forEach((element) {
-        PlayerInnings playerInnings = PlayerInnings.fromJson(element);
-        if (playerInnings.name == batsmanOneName && batsmanOneOnStrike) {
-          playerInnings.batting.isOut = true;
-          playerInnings.batting.dismissal = dismissal;
-        } else if (playerInnings.name == batsmanTwoName && batsmanTwoOnStrike) {
-          playerInnings.batting.isOut = true;
-          playerInnings.batting.dismissal = dismissal;
-        }
+    if (match.secondInnings.target == 0) {
+      if (match.firstInnings.onBatting == match.team1Uid) {
+        List<dynamic> team1players = [];
+        match.team1Players.forEach((element) {
+          PlayerInnings playerInnings = PlayerInnings.fromJson(element);
+          if (playerInnings.name == batsmanOneName && batsmanOneOnStrike) {
+            playerInnings.batting.isOut = true;
+            playerInnings.batting.dismissal = dismissal;
+          } else if (playerInnings.name == batsmanTwoName &&
+              batsmanTwoOnStrike) {
+            playerInnings.batting.isOut = true;
+            playerInnings.batting.dismissal = dismissal;
+          }
 
-        team1players.add(playerInnings.toJson());
-      });
+          team1players.add(playerInnings.toJson());
+        });
 
-      match.team1Players = team1players;
+        match.team1Players = team1players;
+      } else {
+        List<dynamic> team2players = [];
+        match.team2Players.forEach((element) {
+          PlayerInnings playerInnings = PlayerInnings.fromJson(element);
+          if (playerInnings.name == batsmanOneName && batsmanOneOnStrike) {
+            playerInnings.batting.isOut = true;
+            playerInnings.batting.dismissal = dismissal;
+          } else if (playerInnings.name == batsmanTwoName &&
+              batsmanTwoOnStrike) {
+            playerInnings.batting.isOut = true;
+            playerInnings.batting.dismissal = dismissal;
+          }
+
+          team2players.add(playerInnings.toJson());
+        });
+
+        match.team2Players = team2players;
+      }
     } else {
-      List<dynamic> team2players = [];
-      match.team2Players.forEach((element) {
-        PlayerInnings playerInnings = PlayerInnings.fromJson(element);
-        if (playerInnings.name == batsmanOneName && batsmanOneOnStrike) {
-          playerInnings.batting.isOut = true;
-          playerInnings.batting.dismissal = dismissal;
-        } else if (playerInnings.name == batsmanTwoName && batsmanTwoOnStrike) {
-          playerInnings.batting.isOut = true;
-          playerInnings.batting.dismissal = dismissal;
-        }
+      if (match.firstInnings.onBatting == match.team1Uid) {
+        List<dynamic> team2players = [];
+        match.team2Players.forEach((element) {
+          PlayerInnings playerInnings = PlayerInnings.fromJson(element);
+          if (playerInnings.name == batsmanOneName && batsmanOneOnStrike) {
+            playerInnings.batting.isOut = true;
+            playerInnings.batting.dismissal = dismissal;
+          } else if (playerInnings.name == batsmanTwoName &&
+              batsmanTwoOnStrike) {
+            playerInnings.batting.isOut = true;
+            playerInnings.batting.dismissal = dismissal;
+          }
 
-        team2players.add(playerInnings.toJson());
-      });
+          team2players.add(playerInnings.toJson());
+        });
 
-      match.team2Players = team2players;
+        match.team2Players = team2players;
+      } else {
+        List<dynamic> team1players = [];
+        match.team1Players.forEach((element) {
+          PlayerInnings playerInnings = PlayerInnings.fromJson(element);
+          if (playerInnings.name == batsmanOneName && batsmanOneOnStrike) {
+            playerInnings.batting.isOut = true;
+            playerInnings.batting.dismissal = dismissal;
+          } else if (playerInnings.name == batsmanTwoName &&
+              batsmanTwoOnStrike) {
+            playerInnings.batting.isOut = true;
+            playerInnings.batting.dismissal = dismissal;
+          }
+
+          team1players.add(playerInnings.toJson());
+        });
+
+        match.team2Players = team1players;
+      }
     }
 
     Dismissal dismissal2 = Dismissal("", "", "", "");
@@ -2025,10 +2322,18 @@ class _ScorePageState extends State<ScorePage> {
     PlayerInnings playerInnings =
         PlayerInnings(selectedPlayer[0], batting, bowling);
 
-    if (match.firstInnings.onBatting == match.team1Uid) {
-      match.team1Players.add(playerInnings.toJson());
+    if (match.secondInnings.target == 0) {
+      if (match.firstInnings.onBatting == match.team1Uid) {
+        match.team1Players.add(playerInnings.toJson());
+      } else {
+        match.team2Players.add(playerInnings.toJson());
+      }
     } else {
-      match.team2Players.add(playerInnings.toJson());
+      if (match.firstInnings.onBatting == match.team1Uid) {
+        match.team2Players.add(playerInnings.toJson());
+      } else {
+        match.team1Players.add(playerInnings.toJson());
+      }
     }
 
     if (batsmanOneOnStrike) {
@@ -2075,76 +2380,150 @@ class _ScorePageState extends State<ScorePage> {
 
   changeBowlerOperation() {
     changeBatsmanStrike();
-    if (match.firstInnings.onBatting == match.team1Uid) {
-      List<dynamic> team2players = [];
-      int flag = 0;
-      match.team2Players.forEach((element) {
-        PlayerInnings playerInnings = PlayerInnings.fromJson(element);
-        print(playerInnings.name + ":===========111=====" + element['name']);
-        if (playerInnings.name == selectedPlayer[1]) {
-          flag = 1;
+    if (match.secondInnings.target == 0) {
+      if (match.firstInnings.onBatting == match.team1Uid) {
+        List<dynamic> team2players = [];
+        int flag = 0;
+        match.team2Players.forEach((element) {
+          PlayerInnings playerInnings = PlayerInnings.fromJson(element);
+          print(playerInnings.name + ":===========111=====" + element['name']);
+          if (playerInnings.name == selectedPlayer[1]) {
+            flag = 1;
+            bowlerName = playerInnings.name;
+            bowlerBallInAOver = playerInnings.bowling.ballInAOver;
+            bowlerOvers = playerInnings.bowling.over;
+            bowlerRunConceded = playerInnings.bowling.runConceded;
+            bowlerWicket = playerInnings.bowling.wicket;
+          }
+
+          team2players.add(playerInnings.toJson());
+        });
+
+        if (flag == 0) {
+          Dismissal dismissal2 = Dismissal("", "", "", "");
+          Batting batting = Batting(0, 0, false, 1, dismissal2);
+          Bowling bowling = Bowling(0, 0, 0, 0);
+          PlayerInnings playerInnings =
+              PlayerInnings(selectedPlayer[1], batting, bowling);
+
           bowlerName = playerInnings.name;
           bowlerBallInAOver = playerInnings.bowling.ballInAOver;
           bowlerOvers = playerInnings.bowling.over;
           bowlerRunConceded = playerInnings.bowling.runConceded;
           bowlerWicket = playerInnings.bowling.wicket;
+
+          team2players.add(playerInnings.toJson());
         }
 
-        team2players.add(playerInnings.toJson());
-      });
+        match.team2Players = team2players;
+      } else {
+        List<dynamic> team1players = [];
+        int flag = 0;
+        match.team1Players.forEach((element) {
+          PlayerInnings playerInnings = PlayerInnings.fromJson(element);
+          print(playerInnings.name + ":===========4444=====" + element['name']);
+          if (playerInnings.name == selectedPlayer[1]) {
+            flag = 1;
+            bowlerName = playerInnings.name;
+            bowlerBallInAOver = playerInnings.bowling.ballInAOver;
+            bowlerOvers = playerInnings.bowling.over;
+            bowlerRunConceded = playerInnings.bowling.runConceded;
+            bowlerWicket = playerInnings.bowling.wicket;
+          }
 
-      if (flag == 0) {
-        Dismissal dismissal2 = Dismissal("", "", "", "");
-        Batting batting = Batting(0, 0, false, 1, dismissal2);
-        Bowling bowling = Bowling(0, 0, 0, 0);
-        PlayerInnings playerInnings =
-            PlayerInnings(selectedPlayer[1], batting, bowling);
+          team1players.add(playerInnings.toJson());
+        });
 
-        bowlerName = playerInnings.name;
-        bowlerBallInAOver = playerInnings.bowling.ballInAOver;
-        bowlerOvers = playerInnings.bowling.over;
-        bowlerRunConceded = playerInnings.bowling.runConceded;
-        bowlerWicket = playerInnings.bowling.wicket;
+        if (flag == 0) {
+          Dismissal dismissal2 = Dismissal("", "", "", "");
+          Batting batting = Batting(0, 0, false, 1, dismissal2);
+          Bowling bowling = Bowling(0, 0, 0, 0);
+          PlayerInnings playerInnings =
+              PlayerInnings(selectedPlayer[1], batting, bowling);
 
-        team2players.add(playerInnings.toJson());
+          bowlerName = playerInnings.name;
+          bowlerBallInAOver = playerInnings.bowling.ballInAOver;
+          bowlerOvers = playerInnings.bowling.over;
+          bowlerRunConceded = playerInnings.bowling.runConceded;
+          bowlerWicket = playerInnings.bowling.wicket;
+
+          team1players.add(playerInnings.toJson());
+        }
+
+        match.team1Players = team1players;
       }
-
-      match.team2Players = team2players;
     } else {
-      List<dynamic> team1players = [];
-      int flag = 0;
-      match.team1Players.forEach((element) {
-        PlayerInnings playerInnings = PlayerInnings.fromJson(element);
-        print(playerInnings.name + ":===========4444=====" + element['name']);
-        if (playerInnings.name == selectedPlayer[1]) {
-          flag = 1;
+      if (match.firstInnings.onBatting == match.team1Uid) {
+        List<dynamic> team1players = [];
+        int flag = 0;
+        match.team1Players.forEach((element) {
+          PlayerInnings playerInnings = PlayerInnings.fromJson(element);
+          print(playerInnings.name + ":===========111=====" + element['name']);
+          if (playerInnings.name == selectedPlayer[1]) {
+            flag = 1;
+            bowlerName = playerInnings.name;
+            bowlerBallInAOver = playerInnings.bowling.ballInAOver;
+            bowlerOvers = playerInnings.bowling.over;
+            bowlerRunConceded = playerInnings.bowling.runConceded;
+            bowlerWicket = playerInnings.bowling.wicket;
+          }
+
+          team1players.add(playerInnings.toJson());
+        });
+
+        if (flag == 0) {
+          Dismissal dismissal2 = Dismissal("", "", "", "");
+          Batting batting = Batting(0, 0, false, 1, dismissal2);
+          Bowling bowling = Bowling(0, 0, 0, 0);
+          PlayerInnings playerInnings =
+              PlayerInnings(selectedPlayer[1], batting, bowling);
+
           bowlerName = playerInnings.name;
           bowlerBallInAOver = playerInnings.bowling.ballInAOver;
           bowlerOvers = playerInnings.bowling.over;
           bowlerRunConceded = playerInnings.bowling.runConceded;
           bowlerWicket = playerInnings.bowling.wicket;
+
+          team1players.add(playerInnings.toJson());
         }
 
-        team1players.add(playerInnings.toJson());
-      });
+        match.team1Players = team1players;
+      } else {
+        List<dynamic> team2players = [];
+        int flag = 0;
+        match.team2Players.forEach((element) {
+          PlayerInnings playerInnings = PlayerInnings.fromJson(element);
+          print(playerInnings.name + ":===========4444=====" + element['name']);
+          if (playerInnings.name == selectedPlayer[1]) {
+            flag = 1;
+            bowlerName = playerInnings.name;
+            bowlerBallInAOver = playerInnings.bowling.ballInAOver;
+            bowlerOvers = playerInnings.bowling.over;
+            bowlerRunConceded = playerInnings.bowling.runConceded;
+            bowlerWicket = playerInnings.bowling.wicket;
+          }
 
-      if (flag == 0) {
-        Dismissal dismissal2 = Dismissal("", "", "", "");
-        Batting batting = Batting(0, 0, false, 1, dismissal2);
-        Bowling bowling = Bowling(0, 0, 0, 0);
-        PlayerInnings playerInnings =
-            PlayerInnings(selectedPlayer[1], batting, bowling);
+          team2players.add(playerInnings.toJson());
+        });
 
-        bowlerName = playerInnings.name;
-        bowlerBallInAOver = playerInnings.bowling.ballInAOver;
-        bowlerOvers = playerInnings.bowling.over;
-        bowlerRunConceded = playerInnings.bowling.runConceded;
-        bowlerWicket = playerInnings.bowling.wicket;
+        if (flag == 0) {
+          Dismissal dismissal2 = Dismissal("", "", "", "");
+          Batting batting = Batting(0, 0, false, 1, dismissal2);
+          Bowling bowling = Bowling(0, 0, 0, 0);
+          PlayerInnings playerInnings =
+              PlayerInnings(selectedPlayer[1], batting, bowling);
 
-        team1players.add(playerInnings.toJson());
+          bowlerName = playerInnings.name;
+          bowlerBallInAOver = playerInnings.bowling.ballInAOver;
+          bowlerOvers = playerInnings.bowling.over;
+          bowlerRunConceded = playerInnings.bowling.runConceded;
+          bowlerWicket = playerInnings.bowling.wicket;
+
+          team2players.add(playerInnings.toJson());
+        }
+
+        match.team2Players = team2players;
       }
-
-      match.team1Players = team1players;
     }
 
     addOverTrackingOperation();
@@ -2155,13 +2534,23 @@ class _ScorePageState extends State<ScorePage> {
   }
 
   addOverTrackingOperation() {
-    OverTracking overTracking = OverTracking(
-        match.firstInnings.bowler,
-        match.firstInnings.overs,
-        match.firstInnings.totalRun,
-        match.firstInnings.wicket);
+    if (match.secondInnings.target == 0) {
+      OverTracking overTracking = OverTracking(
+          match.firstInnings.bowler,
+          match.firstInnings.overs,
+          match.firstInnings.totalRun,
+          match.firstInnings.wicket);
 
-    match.firstInningsOverTracking.add(overTracking.toJson());
+      match.firstInningsOverTracking.add(overTracking.toJson());
+    } else {
+      OverTracking overTracking = OverTracking(
+          match.secondInnings.bowler,
+          match.secondInnings.overs,
+          match.secondInnings.totalRun,
+          match.secondInnings.wicket);
+
+      match.secondInningsOverTracking.add(overTracking.toJson());
+    }
   }
 
   Widget dropDownField(

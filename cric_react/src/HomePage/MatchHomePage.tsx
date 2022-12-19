@@ -144,7 +144,11 @@ export default function MatchHomePage() {
                         }
                     }
 
-                    strikeRate = matchData.team1Players[i].batting.run/matchData.team1Players[i].batting.ball;
+                    if(matchData.team1Players[i].batting.ball !==0)
+                        strikeRate = matchData.team1Players[i].batting.run/matchData.team1Players[i].batting.ball;
+                    else 
+                        strikeRate = 0;
+
                     item.push(<tr><td>{batsman}</td><td>{helper}</td><td>{wicketTaker}</td><td>{matchData.team1Players[i].batting.run}</td><td>{matchData.team1Players[i].batting.ball}</td><td>{Number(strikeRate).toFixed(2)}</td></tr>);
                     // length = matchData.team1Players.length;
                 }else{
@@ -159,12 +163,26 @@ export default function MatchHomePage() {
                         if(matchData.team2Players[i].batting.dismissal.dismissalType==="Caught"){
                             helper = "c " + supportBy;
                         }
+                        else if(matchData.team2Players[i].batting.dismissal.dismissalType==="Stumped"){
+                            helper = "st " + supportBy;
+                        }
+                        else if(matchData.team2Players[i].batting.dismissal.dismissalType==="Leg Before Wicket"){
+                            wicketTaker = "LBW " + bowler;
+                        }
+                        else if(matchData.team2Players[i].batting.dismissal.dismissalType==="Hit Wicket"){
+                            wicketTaker = "Hit Wicket " + bowler;
+                        }
                         else if(matchData.team2Players[i].batting.dismissal.dismissalType==="Run Out"){
                             helper = "(run out) " + supportBy;
                             wicketTaker = "";
                         }
                     }
-                    strikeRate = matchData.team2Players[i].batting.run/matchData.team2Players[i].batting.ball;
+
+                    if(matchData.team2Players[i].batting.ball !== 0)
+                        strikeRate = matchData.team2Players[i].batting.run/matchData.team2Players[i].batting.ball;
+                    else
+                        strikeRate = 0;
+
                     item.push(<tr><td>{batsman}</td><td>{helper}</td><td>{wicketTaker}</td><td>{matchData.team2Players[i].batting.run}</td><td>{matchData.team2Players[i].batting.ball}</td><td>{Number(strikeRate).toFixed(2)}</td></tr>);
                     // length = matchData.team2Players.length;
                 }
@@ -230,9 +248,9 @@ export default function MatchHomePage() {
 
     return <div style={{alignSelf:"center"}}>
         {flag===false
-            ? <div>
+            ? <div style={{marginLeft: 200, marginRight: 199, marginTop: 10, marginBottom: 100}}>
                 
-        <Box sx={{ bgcolor: 'background.paper', width: 1000, paddingLeft: 10, paddingRight: 10 }}>
+        <Box sx={{ bgcolor: 'background.paper', width: '89%', paddingLeft: 10, paddingRight: 10}}>
         <table width={'100%'}>
             <tr>
                 <th> <h1 style={{textAlign:'center'}}> {matchData.matchName} - {matchData.team1Name} vs {matchData.team2Name} </h1></th>
@@ -320,6 +338,7 @@ export default function MatchHomePage() {
             </tr>
             {renderTDForBowling("first")}
         </table>
+        <br /><br /><br />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
         { matchData.firstInnings.target !== 0
@@ -354,6 +373,7 @@ export default function MatchHomePage() {
                     </tr>
                     {renderTDForBowling("second")}
                 </table>
+                <br /><br /><br />
             </div>
             : <div></div>
         }

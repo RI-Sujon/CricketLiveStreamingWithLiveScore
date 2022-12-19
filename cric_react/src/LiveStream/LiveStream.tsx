@@ -78,7 +78,7 @@ export default function LiveStream() {
                     <Grid item xs={8} style={{backgroundColor: "#ffddff"}}>
                         <Stack>
                             <div style={{backgroundColor: "#000000", height: 570}}>
-                                <Video />
+                                <Video matchId={matchId}/>
                             </div>
                             <div>
                                 <Scorecard matchData={matchData}/>

@@ -29,12 +29,20 @@ namespace cric_dotnet.Repository
                 foreach (KeyValuePair<string, dynamic> pair in pairs)
                 {
                     Console.WriteLine("{0}: {1}", pair.Key, pair.Value);
-                    if (pair.Key == "matchName") 
+                    if (pair.Key == "matchName")
                     {
                         map.Add("matchId", documentSnapshot.Id);
                         map.Add("matchName", pair.Value);
                     }
-                       
+                    else if (pair.Key == "team1Name") 
+                    {
+                        map.Add("team1Name", pair.Value);
+                    }
+                    else if (pair.Key == "team2Name")
+                    {
+                        map.Add("team2Name", pair.Value);
+                    }
+
                 }
                 Console.WriteLine("");
                 list.Add(map);

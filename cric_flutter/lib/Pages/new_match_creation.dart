@@ -120,6 +120,7 @@ class _NewMatchCreationState extends State<NewMatchCreation> {
                             onChanged: (SingingCharacter? v) {
                               setState(() {
                                 _character = v;
+                                print(_character);
                               });
                             },
                           ),
@@ -134,6 +135,7 @@ class _NewMatchCreationState extends State<NewMatchCreation> {
                             onChanged: (SingingCharacter? v) {
                               setState(() {
                                 _character = v;
+                                print(_character);
                               });
                             },
                           ),
@@ -256,14 +258,14 @@ class _NewMatchCreationState extends State<NewMatchCreation> {
     // Route route = MaterialPageRoute(builder: (_) => ScorePage());
     // Navigator.pushReplacement(context, route);
     var tossWinBy = "";
-    if (_character == "team1wintoss") {
+    if (_character == SingingCharacter.team1wintoss) {
       tossWinBy = teamName[0].substring(23, teamName[0].length);
     } else {
       tossWinBy = teamName[1].substring(23, teamName[1].length);
     }
 
     var optedTo = "";
-    if (_character2 == "bat") {
+    if (_character2 == SingingCharacter2.bat) {
       optedTo = "BAT";
     } else {
       optedTo = "BOWL";
@@ -271,8 +273,10 @@ class _NewMatchCreationState extends State<NewMatchCreation> {
 
     var onBatting1 = "";
     var onBatting2 = "";
-    if (_character == "team1wintoss" && _character2 == "bat" ||
-        _character == "team2wintoss" && _character2 == "bowl") {
+    if (_character == SingingCharacter.team1wintoss &&
+            _character2 == SingingCharacter2.bat ||
+        _character == SingingCharacter.team2wintoss &&
+            _character2 == SingingCharacter2.bowl) {
       onBatting1 = teamName[0].substring(0, 20);
       onBatting2 = teamName[1].substring(0, 20);
     } else {
@@ -283,7 +287,7 @@ class _NewMatchCreationState extends State<NewMatchCreation> {
     OverTracking overTracking = OverTracking("", 0, 0, 0);
     List overTrakingList = [];
 
-    overTrakingList.add(overTracking);
+    overTrakingList.add(overTracking.toJson());
 
     Match match = Match(
         _matchController.text,

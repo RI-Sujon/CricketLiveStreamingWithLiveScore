@@ -101,7 +101,11 @@ class _BroadcastPageState extends State<ParticipantPage> {
 
     // // await _engine.joinChannel(null, widget.channelName, null, widget.uid,
     // //     ChannelMediaOptions(false, false));
-    await _engine.joinChannel(null, widget.channelName, null, 01308554743);
+    if (widget.type == "audio") {
+      await _engine.joinChannel(null, widget.channelName, null, 1308554743);
+    } else {
+      await _engine.joinChannel(null, widget.channelName, null, 1633667872);
+    }
 
     _channel?.onMemberJoined = (AgoraRtmMember member) {
       //print("Member joined: " + member.userId + ', channel: ' + member.channelId);
@@ -195,7 +199,7 @@ class _BroadcastPageState extends State<ParticipantPage> {
   Widget _broadcastView() {
     if (_users.isEmpty) {
       return const Center(
-        child: Text("No Users"),
+        child: Text("Loading"),
       );
     }
     return Expanded(

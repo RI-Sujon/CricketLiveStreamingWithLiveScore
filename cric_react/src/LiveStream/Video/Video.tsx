@@ -17,13 +17,13 @@ const config: ClientConfig = {
 const appId: string = "3bc5a33c6ae84318bca5fef012974bcd"; //ENTER APP ID HERE
 // const token: string | null = null;
 
-const Video = () => {
+const Video = (props: any) => {
   const [inCall, setInCall] = useState(false);
-  const [channelName, setChannelName] = useState("xxx");
+  // const [channelName, setChannelName] = useState();
   return (
     <div>
       {/* <h1 className="heading">Agora RTC NG SDK React Wrapper</h1> */}
-      <VideoCall setInCall={setInCall} channelName={channelName} />
+      <VideoCall setInCall={setInCall} channelName={props.matchId} />
       {/* {inCall ? (
         <VideoCall setInCall={setInCall} channelName={channelName} />
       ) : (
@@ -118,7 +118,8 @@ const Videos = (props: {
   const { users, tracks } = props;
 //   const { users } = props;
 
-  let flag = 1;
+  let flag1 = 1;
+  let flag2 = 1;
 
   return (
     <div style={{backgroundColor: "#000000"}}>
@@ -130,8 +131,9 @@ const Videos = (props: {
         
         {users.length > 0 &&
           users.map((user) => {
-            if (user.videoTrack && user.uid===1308554743 && flag===1) {
-                flag = 0;
+            if (user.videoTrack && user.uid===1308554743 && flag1===1 || user.videoTrack && user.uid===1633667872 && flag2===1) {
+                if(flag1===1) flag1 = 0;
+                if(flag2===1) flag2 = 0;
               return (
                 <AgoraVideoPlayer style={{height: '100%', width: '100%'}} className='vid' videoTrack={user.videoTrack} key={user.uid} />
               );
